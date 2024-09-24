@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ExtraText">
+    android:shape="rectangle">
+
+    <!-- Background color -->
+    <solid android:color="#FD978D" />
+
+    <!-- Top corners carved (make them rounded to simulate carving) -->
+    <corners android:topLeftRadius="40dp" android:topRightRadius="40dp" />
+
+    <!-- You can add padding if needed -->
+    <padding
+        android:left="0dp"
+        android:top="10dp"
+        android:right="0dp"
+        android:bottom="0dp" />
+</shape>
