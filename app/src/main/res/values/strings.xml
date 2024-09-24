@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Dish Dash</string>
+    <string name="dishdash">Dish \nDash</string>
+    <string name="txt_lable">Text</string>
 </resources>

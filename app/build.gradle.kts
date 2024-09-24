@@ -32,6 +32,12 @@ android {
 }
 
 dependencies {
+    implementation (libs.lottie)
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.22")
+    implementation ("com.airbnb.android:lottie:latest_version")
+    implementation ("com.google.firebase:firebase-firestore:25.1.0")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.8.1")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.8.1")
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
