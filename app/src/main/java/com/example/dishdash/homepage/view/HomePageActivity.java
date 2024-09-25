@@ -5,30 +5,21 @@ import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.example.dishdash.CalenderFragment;
 import com.example.dishdash.FavFragment;
 import com.example.dishdash.HomeFragment;
 import com.example.dishdash.R;
 import com.example.dishdash.SearchFragment;
-import com.example.dishdash.homepage.presenter.HomePresenter;
-import com.example.dishdash.homepage.presenter.HomePresenterImpl;
-import com.example.dishdash.model.FoodRepositoryImpl;
-import com.example.dishdash.model.response.Food;
-import com.example.dishdash.network.FoodRempteDataSourceImpl;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class HomePageActivity extends AppCompatActivity  {
     public static final String TAG = "HomeActivity";

@@ -3,4 +3,7 @@
     <string name="dishdash">Dish \nDash</string>
     <string name="txt_lable">Text</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragmentcalender">Fragment Caleander</string>
+    <string name="fragmentfavourite">Fragment Favourite</string>
+    <string name="fragmentsearch">Fragment Search</string>
 </resources>
