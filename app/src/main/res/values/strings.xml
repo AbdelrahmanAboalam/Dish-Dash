@@ -6,4 +6,6 @@
     <string name="fragmentcalender">Fragment Caleander</string>
     <string name="fragmentfavourite">Fragment Favourite</string>
     <string name="fragmentsearch">Fragment Search</string>
+    <string name="instructions">Instructions</string>
+    <string name="viedo">Video</string>
 </resources>

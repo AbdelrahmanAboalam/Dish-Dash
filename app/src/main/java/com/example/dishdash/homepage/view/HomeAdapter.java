@@ -1,6 +1,8 @@
 package com.example.dishdash.homepage.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.dishdash.MealFragment;
 import com.example.dishdash.R;
 import com.example.dishdash.model.response.Food;
 
@@ -58,13 +62,26 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Glide.with(context).load(values.get(position).getMealThumbnail())
                 .apply(new RequestOptions().override(200,200)
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.img);
         holder.txtView.setText(values.get(position).getMealName());
+
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MealFragment mealFragment=MealFragment.getInstance(values.get(position));
+
+                ((HomePageActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container,mealFragment)
+                        .addToBackStack(null).commit();
+            }
+        });
+
+
     }
 
     @Override
