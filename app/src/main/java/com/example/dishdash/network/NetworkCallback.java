@@ -4,8 +4,8 @@ import com.example.dishdash.model.response.Food;
 
 import java.util.List;
 
-public interface NetworkCallback {
+public interface NetworkCallback<T> {
 
-    public void onSuccessResult(List<Food> food);
+    public void onSuccessResult(List<T> food);
     public void onFailureResult(String errorMsg);
 }

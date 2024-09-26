@@ -7,25 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".homepage.view.HomePageActivity">
 
-
-
-
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:id="@+id/bottom_navigation"-->
-<!--        android:layout_width="390dp"-->
-<!--        android:layout_height="90dp"-->
-<!--        android:layout_marginStart="5dp"-->
-<!--        android:layout_marginEnd="5dp"-->
-<!--        android:background="#FD978D"-->
-<!--        app:itemRippleColor="#D96767"-->
-<!--        app:itemTextColor="#E69B9B"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.454"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:menu="@menu/bottom_navigation_menu"-->
-<!--        tools:ignore="MissingConstraints" />-->
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="390dp"

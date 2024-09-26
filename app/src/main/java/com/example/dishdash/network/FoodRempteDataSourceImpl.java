@@ -1,10 +1,11 @@
 package com.example.dishdash.network;
 
-import com.example.dishdash.model.response.RandomFoodResponse;
+import androidx.annotation.NonNull;
+
+import com.example.dishdash.model.response.Food;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,20 +31,29 @@ public class FoodRempteDataSourceImpl implements FoodRemoteDataSource {
         return client;
     }
 
+
     @Override
-    public void makeNetworkCallRandomFood(NetworkCallback networkCallback) {
-        foodService.getRandomFood().enqueue(new Callback<RandomFoodResponse>() {
+    public void makeNetworkCallRandomFood(NetworkCallback<Food> networkCallback) {
+        foodService.getRandomFood().enqueue(new Callback<ListResponse<Food>>() {
+
             @Override
-            public void onResponse(Call<RandomFoodResponse> call, Response<RandomFoodResponse> response) {
-                if (response.isSuccessful()){
-                    networkCallback.onSuccessResult(response.body().getFood());
+            public void onResponse(@NonNull Call<ListResponse<Food>> call, @NonNull retrofit2.Response<ListResponse<Food>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallback.onSuccessResult(response.body().allFood);
+                } else {
+                    networkCallback.onFailureResult("Failed to get random meal");
                 }
             }
 
             @Override
-            public void onFailure(Call<RandomFoodResponse> call, Throwable throwable) {
+            public void onFailure(Call<ListResponse<Food>> call, Throwable throwable) {
                 networkCallback.onFailureResult(throwable.getMessage());
+
             }
-        });
+
+
+            });
+
+        }
     }
-}
+

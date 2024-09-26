@@ -20,9 +20,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.homepage.presenter.HomePresenter;
 import com.example.dishdash.homepage.view.HomeAdapter;
+import com.example.dishdash.homepage.view.IngredientsAdapter;
 import com.example.dishdash.model.response.Food;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 public class MealFragment extends Fragment {
@@ -34,6 +36,10 @@ public class MealFragment extends Fragment {
     TextView instruction;
     WebView webView;
 
+    private RecyclerView recyclerView;
+    private IngredientsAdapter ingredientsAdapter;
+    LinearLayoutManager linearLayout;
+
     public static MealFragment getInstance(Food food){
         MealFragment fragment =new MealFragment();
         Bundle args = new Bundle();
@@ -41,6 +47,8 @@ public class MealFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +63,15 @@ public class MealFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_meal, container, false);
+        initUI(view);
+
+        recyclerView.setHasFixedSize(true);
+        linearLayout = new LinearLayoutManager(getActivity());
+        ingredientsAdapter = new IngredientsAdapter(getActivity(), new ArrayList<>());
+        linearLayout.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(linearLayout);
+        recyclerView.setAdapter(ingredientsAdapter);
+
         mealImage = view.findViewById(R.id.imageView);
         mealName = view.findViewById(R.id.textView2);
         instruction = view.findViewById(R.id.txtInstruction);
@@ -65,7 +82,7 @@ public class MealFragment extends Fragment {
         webView.setWebViewClient(new WebViewClient());
 
 
-        Glide.with(this).load(food.getMealThumbnail()).apply(new RequestOptions().override(700,200)
+        Glide.with(this).load(food.getMealThumbnail()).apply(new RequestOptions().override(200,200)
                 .placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_foreground))
                 .into(mealImage);
 
@@ -86,6 +103,10 @@ public class MealFragment extends Fragment {
         String youtubeEmbedUrl = "https://www.youtube.com/embed/" + getYoutubeVideoId(food.getYoutubeUrl());
         webView.loadUrl(youtubeEmbedUrl);
         return view;
+    }
+
+    private void initUI(View view) {
+        recyclerView = view.findViewById(R.id.recyclerView2);
     }
     private String getYoutubeVideoId(String url) {
         String videoId = "";

@@ -61,35 +61,5 @@ public class HomePageActivity extends AppCompatActivity  {
 
     }
 
-    //    private RecyclerView recyclerView;
-//    private HomeAdapter homeAdapter;
-//    HomePresenter homePresenter;
-//    LinearLayoutManager linearLayout;
-//    private void initUI(){
-//        recyclerView = findViewById(R.id.recView);
-//    }
 
-//    @Override
-//    public void showData(List<Food> food) {
-//        homeAdapter.setList(food);
-//        homeAdapter.notifyDataSetChanged();
-//    }
-//
-//    @Override
-//    public void showErrMsg(String error) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage(error).setTitle("An Error Occurred");
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
-//initUI();
-//
-//        recyclerView.setHasFixedSize(true);
-//        linearLayout = new LinearLayoutManager(this);
-//        homeAdapter = new HomeAdapter(HomePageActivity.this,new ArrayList<>());
-//        homePresenter = new HomePresenterImpl(this, FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance()));
-//        linearLayout.setOrientation(RecyclerView.VERTICAL);
-//        recyclerView.setLayoutManager(linearLayout);
-//        recyclerView.setAdapter(homeAdapter);
-//        homePresenter.getRandomFood();
 }

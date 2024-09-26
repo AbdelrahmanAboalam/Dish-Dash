@@ -8,7 +8,7 @@ import com.example.dishdash.network.NetworkCallback;
 
 import java.util.List;
 
-public class HomePresenterImpl implements NetworkCallback,HomePresenter {
+public class HomePresenterImpl implements NetworkCallback<Food>,HomePresenter {
 
         private HomeActivityInterface _view;
         private FoodRepository _repo;
