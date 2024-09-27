@@ -1,4 +1,4 @@
-package com.example.dishdash;
+package com.example.dishdash.mealditalies.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,32 +13,42 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.dishdash.homepage.presenter.HomePresenter;
-import com.example.dishdash.homepage.view.HomeAdapter;
+import com.example.dishdash.R;
+import com.example.dishdash.favourite.presenter.FavouritePresenter;
+import com.example.dishdash.favourite.view.FavFoodAdapter;
+import com.example.dishdash.favourite.view.OnFavClickListener;
 import com.example.dishdash.homepage.view.IngredientsAdapter;
+import com.example.dishdash.mealditalies.presenter.MealsPresenter;
 import com.example.dishdash.model.response.Food;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class MealFragment extends Fragment {
+public class MealFragment extends Fragment implements OnFoodClickListener {
     private static final String ARG_FOOD_NAME = "food_name";
     private Food food;
+
+    MealsPresenter favpresnter;
+    FavFoodAdapter adapter;
+    OnFoodClickListener favListener;
 
     ImageView mealImage;
     TextView mealName;
     TextView instruction;
     WebView webView;
+    Button btnFav;
 
     private RecyclerView recyclerView;
     private IngredientsAdapter ingredientsAdapter;
     LinearLayoutManager linearLayout;
+    private OnFavClickListener listener;
 
     public static MealFragment getInstance(Food food){
         MealFragment fragment =new MealFragment();
@@ -72,6 +82,7 @@ public class MealFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(ingredientsAdapter);
 
+        btnFav=view.findViewById(R.id.btnFav);
         mealImage = view.findViewById(R.id.imageView);
         mealName = view.findViewById(R.id.textView2);
         instruction = view.findViewById(R.id.txtInstruction);
@@ -102,6 +113,12 @@ public class MealFragment extends Fragment {
 
         String youtubeEmbedUrl = "https://www.youtube.com/embed/" + getYoutubeVideoId(food.getYoutubeUrl());
         webView.loadUrl(youtubeEmbedUrl);
+        btnFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                favListener.onAddToFavClick(food);
+            }
+        });
         return view;
     }
 
@@ -115,5 +132,16 @@ public class MealFragment extends Fragment {
             videoId = parts[1].split("&")[0];
         }
         return videoId;
+    }
+
+    @Override
+    public void onLayoutClick(Food food) {
+        Toast.makeText(getContext(), food.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAddToFavClick(Food food) {
+        favpresnter.addToFav(food);
+//        adapter.notifyDataSetChanged();
     }
 }

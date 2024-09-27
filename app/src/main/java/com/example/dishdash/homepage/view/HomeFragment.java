@@ -1,4 +1,4 @@
-package com.example.dishdash;
+package com.example.dishdash.homepage.view;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.dishdash.R;
+import com.example.dishdash.db.FoodLocalDataSourceImp;
 import com.example.dishdash.homepage.presenter.HomePresenter;
 import com.example.dishdash.homepage.presenter.HomePresenterImpl;
-import com.example.dishdash.homepage.view.HomeActivityInterface;
-import com.example.dishdash.homepage.view.HomeAdapter;
 import com.example.dishdash.model.FoodRepositoryImpl;
 import com.example.dishdash.model.response.Food;
 import com.example.dishdash.network.FoodRempteDataSourceImpl;
@@ -47,7 +47,8 @@ public class HomeFragment extends Fragment implements HomeActivityInterface {
         recyclerView.setHasFixedSize(true);
         linearLayout = new LinearLayoutManager(getActivity());
         homeAdapter = new HomeAdapter(getActivity(), new ArrayList<>());
-        homePresenter = new HomePresenterImpl(this, FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance()));
+        homePresenter = new HomePresenterImpl(this, FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance(),
+                FoodLocalDataSourceImp.getInstance(getContext())));
         linearLayout.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(homeAdapter);

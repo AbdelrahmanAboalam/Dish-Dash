@@ -8,4 +8,5 @@
     <string name="fragmentsearch">Fragment Search</string>
     <string name="instructions">Instructions</string>
     <string name="viedo">Video</string>
+    <string name="remove">Remove\n</string>
 </resources>

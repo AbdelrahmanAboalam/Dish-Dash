@@ -1,6 +1,5 @@
 package com.example.dishdash.homepage.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.dishdash.MealFragment;
 import com.example.dishdash.R;
 import com.example.dishdash.model.response.Food;
 
@@ -69,7 +67,12 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.img);
         holder.txtView.setText(values.get(position).getMealName());
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
 //        holder.img.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

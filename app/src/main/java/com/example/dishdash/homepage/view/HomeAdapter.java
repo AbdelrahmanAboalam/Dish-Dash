@@ -2,7 +2,6 @@ package com.example.dishdash.homepage.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.dishdash.MealFragment;
+import com.example.dishdash.mealditalies.view.MealFragment;
 import com.example.dishdash.R;
 import com.example.dishdash.model.response.Food;
 
