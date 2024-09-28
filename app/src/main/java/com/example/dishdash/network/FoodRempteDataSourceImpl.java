@@ -2,10 +2,12 @@ package com.example.dishdash.network;
 
 import androidx.annotation.NonNull;
 
+import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Food;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -55,5 +57,44 @@ public class FoodRempteDataSourceImpl implements FoodRemoteDataSource {
             });
 
         }
+
+    @Override
+    public void makeNetworkCallCategoryMeal(NetworkCallback<Category> networkCallBack) {
+        foodService.getMealCategories().enqueue(new Callback<ListResponse<Category>>() {
+
+            @Override
+            public void onResponse(@NonNull Call<ListResponse<Category>> call, @NonNull retrofit2.Response<ListResponse<Category>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallBack.onSuccessResult(response.body().categories);
+                } else {
+                    networkCallBack.onFailureResult("Failed to fetch category");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<Category>> call, Throwable throwable) {
+                networkCallBack.onFailureResult(throwable.getMessage());
+            }
+        });
     }
+
+    @Override
+    public void makeNetworkCallCategoryMealById(String category, NetworkCallback<Food> networkCallBack) {
+        foodService.getMealByIdCategory(category).enqueue(new Callback<ListResponse<Food>>() {
+            @Override
+            public void onResponse(Call<ListResponse<Food>> call, Response<ListResponse<Food>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallBack.onSuccessResult(response.body().allFood);
+                } else {
+                    networkCallBack.onFailureResult("Failed to fetch category");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<Food>> call, Throwable throwable) {
+                networkCallBack.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+}
 

@@ -8,4 +8,7 @@ public class ListResponse<T> {
 
     @SerializedName("meals")
     public List<T> allFood;
+
+    @SerializedName("categories")
+    public List<T> categories;
 }

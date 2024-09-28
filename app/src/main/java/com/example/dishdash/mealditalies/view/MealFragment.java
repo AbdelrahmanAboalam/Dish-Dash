@@ -1,6 +1,7 @@
 package com.example.dishdash.mealditalies.view;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,23 +22,27 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.R;
-import com.example.dishdash.favourite.presenter.FavouritePresenter;
+import com.example.dishdash.db.FoodLocalDataSourceImp;
 import com.example.dishdash.favourite.view.FavFoodAdapter;
 import com.example.dishdash.favourite.view.OnFavClickListener;
-import com.example.dishdash.homepage.view.IngredientsAdapter;
 import com.example.dishdash.mealditalies.presenter.MealsPresenter;
+import com.example.dishdash.mealditalies.presenter.MealsPresenterImp;
+import com.example.dishdash.model.FoodRepository;
+import com.example.dishdash.model.FoodRepositoryImpl;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.network.FoodRempteDataSourceImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class MealFragment extends Fragment implements OnFoodClickListener {
+public class MealFragment extends Fragment implements OnFoodClickListener ,MealView{
     private static final String ARG_FOOD_NAME = "food_name";
     private Food food;
 
-    MealsPresenter favpresnter;
-    FavFoodAdapter adapter;
-    OnFoodClickListener favListener;
+
+    FoodRepositoryImpl favpresnter;
+
 
     ImageView mealImage;
     TextView mealName;
@@ -45,10 +50,11 @@ public class MealFragment extends Fragment implements OnFoodClickListener {
     WebView webView;
     Button btnFav;
 
+
     private RecyclerView recyclerView;
     private IngredientsAdapter ingredientsAdapter;
     LinearLayoutManager linearLayout;
-    private OnFavClickListener listener;
+
 
     public static MealFragment getInstance(Food food){
         MealFragment fragment =new MealFragment();
@@ -64,6 +70,7 @@ public class MealFragment extends Fragment implements OnFoodClickListener {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             food = (Food)getArguments().getSerializable(ARG_FOOD_NAME);
+            favpresnter=FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance(), FoodLocalDataSourceImp.getInstance(getContext()));
         }
     }
 
@@ -77,7 +84,7 @@ public class MealFragment extends Fragment implements OnFoodClickListener {
 
         recyclerView.setHasFixedSize(true);
         linearLayout = new LinearLayoutManager(getActivity());
-        ingredientsAdapter = new IngredientsAdapter(getActivity(), new ArrayList<>());
+        ingredientsAdapter = new IngredientsAdapter(getActivity(), new ArrayList<>(),this);
         linearLayout.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(ingredientsAdapter);
@@ -113,10 +120,18 @@ public class MealFragment extends Fragment implements OnFoodClickListener {
 
         String youtubeEmbedUrl = "https://www.youtube.com/embed/" + getYoutubeVideoId(food.getYoutubeUrl());
         webView.loadUrl(youtubeEmbedUrl);
+        if(food.isFav()){
+            btnFav.setEnabled(false);
+        }
+        else{
+            btnFav.setEnabled(true);
+        }
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                favListener.onAddToFavClick(food);
+                Toast.makeText(getContext(), "Hi from button" + " added to cart", Toast.LENGTH_SHORT).show();
+                onAddToFavClick(food);
+                btnFav.setEnabled(false);
             }
         });
         return view;
@@ -141,7 +156,20 @@ public class MealFragment extends Fragment implements OnFoodClickListener {
 
     @Override
     public void onAddToFavClick(Food food) {
-        favpresnter.addToFav(food);
-//        adapter.notifyDataSetChanged();
+        food.setFav(true);
+        favpresnter.insertFood(food);
+    }
+
+    @Override
+    public void showData(List<Food> food) {
+        ingredientsAdapter.setList(food);
+    }
+
+    @Override
+    public void showErrMsg(String error) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(error).setTitle("An Error Occurred");
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

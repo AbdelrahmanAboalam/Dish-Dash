@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.R;
+import com.example.dishdash.homepage.view.HomePageActivity;
+import com.example.dishdash.mealditalies.view.MealFragment;
 import com.example.dishdash.model.response.Food;
 
 import java.util.List;
@@ -56,11 +58,27 @@ public class FavFoodAdapter extends RecyclerView.Adapter<FavFoodAdapter.ViewHold
                         .placeholder(R.drawable.ic_launcher_foreground)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MealFragment mealFragment=MealFragment.getInstance(values.get(position));
+
+                ((HomePageActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container,mealFragment)
+                        .addToBackStack(null).commit();
+            }
+        });
         holder.txtTitle.setText(food.getMealName());
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onLayoutClick(food);
+            }
+        });
+        holder.btnRemoveFromFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onRemoveFromFavClick(food);
             }
         });
     }

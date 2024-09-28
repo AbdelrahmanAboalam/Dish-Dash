@@ -1,12 +1,14 @@
-package com.example.dishdash.homepage.view;
+package com.example.dishdash.mealditalies.view;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,10 +26,12 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     private static final String TAG = "RecyclerView";
     private final Context context;
     private List<Food> values;
+    OnFoodClickListener favListener ;
 
-    public IngredientsAdapter(Context context, List<Food> values) {
+    public IngredientsAdapter(Context context, List<Food> values,OnFoodClickListener favListener) {
         this.context = context;
         this.values = values;
+        this.favListener=favListener;
     }
 
     public void setList(List<Food> food) {
@@ -39,6 +43,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         private TextView txtView;
         public ConstraintLayout constraintLayout;
         public View layout;
+
 
         public ViewHolder(@NonNull View v) {
             super(v);
@@ -61,28 +66,23 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+
+        Food food = values.get(position);
         Glide.with(context).load(values.get(position).getMealThumbnail())
                 .apply(new RequestOptions().override(200, 200)
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.img);
+
         holder.txtView.setText(values.get(position).getMealName());
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                favListener.onLayoutClick(food);
             }
         });
-//        holder.img.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                MealFragment mealFragment = MealFragment.getInstance(values.get(position));
-//
-//                ((HomePageActivity) context).getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fragment_container, mealFragment)
-//                        .addToBackStack(null).commit();
-//            }
-//        });
     }
 
 

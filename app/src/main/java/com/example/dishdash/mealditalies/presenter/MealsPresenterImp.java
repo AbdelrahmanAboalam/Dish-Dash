@@ -3,8 +3,11 @@ package com.example.dishdash.mealditalies.presenter;
 import com.example.dishdash.favourite.view.FavView;
 import com.example.dishdash.model.FoodRepository;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.network.NetworkCallback;
 
-public class MealsPresenterImp implements MealsPresenter{
+import java.util.List;
+
+public class MealsPresenterImp implements MealsPresenter, NetworkCallback<Food> {
 
     FavView _view;
     FoodRepository _repo;
@@ -16,6 +19,7 @@ public class MealsPresenterImp implements MealsPresenter{
 
     @Override
     public void getProducts() {
+_repo.getStoredFood();
 
     }
 
@@ -23,5 +27,18 @@ public class MealsPresenterImp implements MealsPresenter{
     public void addToFav(Food food) {
         food.setFav(true);
         _repo.insertFood(food);
+    }
+
+    @Override
+    public void onSuccessResult(List<Food> food) {
+        for ( Food foods : food){
+            _repo.checkFoodExists(foods);
+        }
+        _view.showData(food);
+    }
+
+    @Override
+    public void onFailureResult(String errorMsg) {
+        _view.showErrMsg(errorMsg);
     }
 }
