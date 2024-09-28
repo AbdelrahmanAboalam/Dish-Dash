@@ -1,5 +1,6 @@
 package com.example.dishdash.favourite.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,7 +51,7 @@ public class FavFoodAdapter extends RecyclerView.Adapter<FavFoodAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavFoodAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavFoodAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Food food =values.get(position);
 
         Glide.with(context).load(food.getMealThumbnail())
