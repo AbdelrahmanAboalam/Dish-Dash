@@ -11,7 +11,13 @@ import java.util.List;
 public interface FoodRepository {
     public void getRandomFood(NetworkCallback networkCallback);
     public void getMealCategories(NetworkCallback<Category> networkCallBack);
+    void getMealByCategory(String id , NetworkCallback<Food> callback);
+
+    void getMealByCountry(String country , NetworkCallback<Food> callback);
+    void getMealByIngredient(String ingredient , NetworkCallback<Food> callback);
     void getMealById(String id , NetworkCallback<Food> callback);
+    void getMealByName(String name , NetworkCallback<Food> callback);
+
     public LiveData<List<Food>> getStoredFood();
     public void insertFood(Food food);
     public void deleteFood(Food food);

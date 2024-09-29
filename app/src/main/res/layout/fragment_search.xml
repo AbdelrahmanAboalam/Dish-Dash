@@ -5,15 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fragmentsearch"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="408dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="28dp"
+        android:queryHint="Enter Meal Name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/mealTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meal" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/countryTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Country" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/categoryTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/ingredientTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredient" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recView4"
+        android:layout_width="409dp"
+        android:layout_height="581dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,4 +6,6 @@ public interface MealsPresenter {
 
     public void getProducts();
     public void addToFav(Food food);
+
+
 }

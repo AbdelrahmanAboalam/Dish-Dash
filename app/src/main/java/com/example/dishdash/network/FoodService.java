@@ -17,8 +17,17 @@ public interface FoodService {
     @GET("filter.php")
     Call<ListResponse<Food>> getMealByIdCategory(@Query("c") String category);
 
+    @GET("filter.php")
+    Call<ListResponse<Food>> getMealByIngredient(@Query("i") String ingredient);
+
+    @GET("filter.php")
+    Call<ListResponse<Food>> getMealByCountry(@Query("a") String country);
+
     @GET("lookup.php")
     Call<ListResponse<Food>> getMealById(@Query("c") String id);
+
+    @GET("search.php")
+    Call<ListResponse<Food>> getFoodByName(@Query("s") String foodName);
 
 
 }

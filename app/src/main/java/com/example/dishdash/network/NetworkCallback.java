@@ -7,5 +7,6 @@ import java.util.List;
 public interface NetworkCallback<T> {
 
     public void onSuccessResult(List<T> food);
+
     public void onFailureResult(String errorMsg);
 }

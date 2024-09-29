@@ -40,7 +40,27 @@ public class FoodRepositoryImpl implements FoodRepository{
     }
 
     @Override
-    public void getMealById(String id, NetworkCallback callback) {
+    public void getMealByCountry(String country, NetworkCallback<Food> callback) {
+        remoteSource.makeNetworkCallCountryMealById(country,callback);
+    }
+
+    @Override
+    public void getMealByIngredient(String ingredient, NetworkCallback<Food> callback) {
+        remoteSource.makeNetworkCallIngradiant(ingredient,callback);
+    }
+
+    @Override
+    public void getMealById(String id, NetworkCallback<Food> callback) {
+        remoteSource.makeNetworkCallFoodById(id,callback);
+    }
+
+    @Override
+    public void getMealByName(String name, NetworkCallback<Food> callback) {
+        remoteSource.makeNetworkCallMealByName(name,callback);
+    }
+
+    @Override
+    public void getMealByCategory(String id, NetworkCallback callback) {
         remoteSource.makeNetworkCallCategoryMealById(id,callback);
     }
 

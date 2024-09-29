@@ -70,7 +70,7 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void getFoodByCategory(String id) {
-        _repo.getMealById(id,new CategoryFoodCallback());
+        _repo.getMealByCategory(id,new CategoryFoodCallback());
     }
 
 

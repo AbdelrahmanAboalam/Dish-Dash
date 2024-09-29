@@ -96,5 +96,82 @@ public class FoodRempteDataSourceImpl implements FoodRemoteDataSource {
             }
         });
     }
+
+    @Override
+    public void makeNetworkCallCountryMealById(String country, NetworkCallback<Food> networkCallBack) {
+        foodService.getMealByCountry(country).enqueue(new Callback<ListResponse<Food>>() {
+            @Override
+            public void onResponse(Call<ListResponse<Food>> call, Response<ListResponse<Food>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallBack.onSuccessResult(response.body().allFood);
+                } else {
+                    networkCallBack.onFailureResult("Failed to fetch category");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<Food>> call, Throwable throwable) {
+                networkCallBack.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallMealByName(String name, NetworkCallback<Food> networkCallBack) {
+        foodService.getFoodByName(name).enqueue(new Callback<ListResponse<Food>>() {
+            @Override
+            public void onResponse(Call<ListResponse<Food>> call, Response<ListResponse<Food>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallBack.onSuccessResult(response.body().allFood);
+                } else {
+                    networkCallBack.onFailureResult("Failed to fetch category");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<Food>> call, Throwable throwable) {
+                networkCallBack.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallIngradiant(String ingrediant, NetworkCallback<Food> networkCallBack) {
+        foodService.getMealByIngredient(ingrediant).enqueue(new Callback<ListResponse<Food>>() {
+            @Override
+            public void onResponse(Call<ListResponse<Food>> call, Response<ListResponse<Food>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallBack.onSuccessResult(response.body().allFood);
+                } else {
+                    networkCallBack.onFailureResult("Failed to fetch category");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<Food>> call, Throwable throwable) {
+                networkCallBack.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallFoodById(String id, NetworkCallback<Food> networkCallBack) {
+        foodService.getMealById(id).enqueue(new Callback<ListResponse<Food>>() {
+            @Override
+            public void onResponse(Call<ListResponse<Food>> call, Response<ListResponse<Food>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallBack.onSuccessResult(response.body().allFood);
+                } else {
+                    networkCallBack.onFailureResult("Failed to fetch category");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<Food>> call, Throwable throwable) {
+                networkCallBack.onFailureResult(throwable.getMessage());
+            }
+        });
+
+    }
 }
 

@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +26,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.R;
 import com.example.dishdash.db.FoodLocalDataSourceImp;
-import com.example.dishdash.favourite.view.FavFoodAdapter;
-import com.example.dishdash.favourite.view.OnFavClickListener;
-import com.example.dishdash.mealditalies.presenter.MealsPresenter;
-import com.example.dishdash.mealditalies.presenter.MealsPresenterImp;
-import com.example.dishdash.model.FoodRepository;
 import com.example.dishdash.model.FoodRepositoryImpl;
 import com.example.dishdash.model.response.Food;
 import com.example.dishdash.network.FoodRempteDataSourceImpl;
+import com.example.dishdash.searchfragment.presenter.SearchPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +39,9 @@ public class MealFragment extends Fragment implements OnFoodClickListener ,MealV
     private static final String ARG_FOOD_NAME = "food_name";
     private Food food;
 
-
+private static final String TAG = "track l moseba";
     FoodRepositoryImpl favpresnter;
-
+    SearchPresenter serprsenter;
 
     ImageView mealImage;
     TextView mealName;
@@ -85,7 +84,7 @@ public class MealFragment extends Fragment implements OnFoodClickListener ,MealV
         recyclerView.setHasFixedSize(true);
         linearLayout = new LinearLayoutManager(getActivity());
         ingredientsAdapter = new IngredientsAdapter(getActivity(), new ArrayList<>(),this);
-        linearLayout.setOrientation(RecyclerView.VERTICAL);
+        linearLayout.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(ingredientsAdapter);
 
@@ -99,6 +98,11 @@ public class MealFragment extends Fragment implements OnFoodClickListener ,MealV
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
+//        List<Ingredient> ingredientPojos = getIngList(food);
+
+//        ingredientsAdapter.setList2(ingredientPojos);
+//        recyclerView.setAdapter(ingredientsAdapter);
+//        ingredientsAdapter.notifyDataSetChanged();
 
         Glide.with(this).load(food.getMealThumbnail()).apply(new RequestOptions().override(200,200)
                 .placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_foreground))
@@ -137,8 +141,16 @@ public class MealFragment extends Fragment implements OnFoodClickListener ,MealV
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "onViewCreated: "+food);
+//        Log.i(TAG, "onViewCreated: " +ingredientPojos );
+
+    }
+
     private void initUI(View view) {
-        recyclerView = view.findViewById(R.id.recyclerView2);
+        recyclerView = view.findViewById(R.id.rec2);
     }
     private String getYoutubeVideoId(String url) {
         String videoId = "";
@@ -163,6 +175,7 @@ public class MealFragment extends Fragment implements OnFoodClickListener ,MealV
     @Override
     public void showData(List<Food> food) {
         ingredientsAdapter.setList(food);
+        ingredientsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -172,4 +185,35 @@ public class MealFragment extends Fragment implements OnFoodClickListener ,MealV
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    @Override
+    public void showIng(Food food) {
+//        List<Ingredient> ingredientPojos = getIngList(food);
+//        Log.i(TAG, "showIng: "+ingredientPojos);
+//        ingredientsAdapter.setList2(ingredientPojos);
+//        ingredientsAdapter.notifyDataSetChanged();
+    }
+
+
+//    private List<Ingredient> getIngList(Food food) {
+//        List<Ingredient> ingList =  new ArrayList<>();
+//        for (int i =1 ; i <= 10; i++) {
+//            try {
+//                String ingredient = (String) food.getClass().getMethod("getIngredient" + i).invoke(food);
+//                String measure = (String) food.getClass().getMethod("getMeasure" + i).invoke(food);
+//                if (ingredient != null && !ingredient.isEmpty() && measure != null && !measure.isEmpty()) {
+//                    String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredient + ".png";
+//                    ingList.add(new Ingredient(ingredient, measure, imageUrl));
+//                    Log.i(TAG, "getIngList: " + ingList);
+//                }
+//            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e )
+//            {
+//                Log.i(TAG, "u in catch RUN ");
+//                // Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
+//
+//        return ingList;
+//    }
 }

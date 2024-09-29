@@ -35,6 +35,7 @@ _repo.getStoredFood();
             _repo.checkFoodExists(foods);
         }
         _view.showData(food);
+
     }
 
     @Override
