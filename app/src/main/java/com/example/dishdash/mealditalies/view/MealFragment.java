@@ -44,6 +44,7 @@ import java.util.List;
 public class MealFragment extends Fragment implements OnFoodClickListener ,MealView{
     private static final String ARG_FOOD_NAME = "food_name";
     private Food food;
+    private FoodPlan foodPlan;
 
 private static final String TAG = "track l moseba";
     FoodRepositoryImpl favpresnter;
@@ -93,20 +94,19 @@ private static final String TAG = "track l moseba";
         imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().setFragmentResultListener("requestKey", getActivity(), new FragmentResultListener() {
-                    @Override
-                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        selectedDate = result.getString("selectedDate");
-                        Toast.makeText(getContext(), selectedDate, Toast.LENGTH_SHORT).show();
-                        FoodPlan foodPlan = Converter.convertToPlanClass(food, selectedDate);
-                    }
-                });
                 CalenderFragment dialogFragment = new CalenderFragment();
+                dialogFragment.setOnDateSelectedListener(selectedDate -> {
+                    // Use the selected date to create a food plan and update the database
+                    Toast.makeText(getContext(), "Selected date: " + selectedDate, Toast.LENGTH_SHORT).show();
+                    foodPlan = Converter.convertToPlanClass(food, selectedDate);
+                    favpresnter.insertFoodPlan(foodPlan);
+                });
+
                 dialogFragment.show(getParentFragmentManager(), "calendarDialog");
             }
         });
 
-        ingredientsAdapter = new IngredientsAdapter(getActivity(),new ArrayList<>(),food.getIngretians(),food.getMesures(),this);
+        ingredientsAdapter = new IngredientsAdapter(getActivity(),new ArrayList<>(),this);
         recyclerView.setHasFixedSize(true);
         linearLayout = new LinearLayoutManager(getActivity());
         linearLayout.setOrientation(RecyclerView.HORIZONTAL);
@@ -199,6 +199,8 @@ private static final String TAG = "track l moseba";
         favpresnter.insertFood(food);
     }
 
+
+
     @Override
     public void showData(List<Food> food) {
 
@@ -217,7 +219,7 @@ private static final String TAG = "track l moseba";
 
     private List<Ingredient> getIngList(Food food) {
         List<Ingredient> ingList =  new ArrayList<>();
-        for (int i =1 ; i <= 10; i++) {
+        for (int i =1 ; i <= 20; i++) {
             try {
                 String ingredient = (String) food.getClass().getMethod("getIngredient" + i).invoke(food);
                 String measure = (String) food.getClass().getMethod("getMeasure" + i).invoke(food);

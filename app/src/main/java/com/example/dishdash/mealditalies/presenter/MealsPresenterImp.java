@@ -3,6 +3,7 @@ package com.example.dishdash.mealditalies.presenter;
 import com.example.dishdash.favourite.view.FavView;
 import com.example.dishdash.model.FoodRepository;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.FoodPlan;
 import com.example.dishdash.network.NetworkCallback;
 
 import java.util.List;
@@ -27,6 +28,11 @@ _repo.getStoredFood();
     public void addToFav(Food food) {
         food.setFav(true);
         _repo.insertFood(food);
+    }
+
+    @Override
+    public void addToPlan(FoodPlan foodPlan) {
+        _repo.insertFoodPlan(foodPlan);
     }
 
     @Override

@@ -56,7 +56,7 @@ public class Converter {
                 food.getImageSource(),
                 food.getCreativeCommonsConfirmed(),
                 food.getDateModified(),
-                false,
+                food.isFav(),
                 date);
     }
 }

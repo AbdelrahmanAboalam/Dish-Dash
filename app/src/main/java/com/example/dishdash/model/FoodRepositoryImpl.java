@@ -6,6 +6,7 @@ import com.example.dishdash.db.FoodLoaclDataBase;
 import com.example.dishdash.db.FoodLocalDataSourceImp;
 import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.FoodPlan;
 import com.example.dishdash.network.FoodRemoteDataSource;
 import com.example.dishdash.network.NetworkCallback;
 
@@ -16,16 +17,18 @@ public class FoodRepositoryImpl implements FoodRepository{
     FoodLoaclDataBase localDataSource;
     FoodRemoteDataSource remoteSource;
     private static FoodRepositoryImpl repo = null;
+    private String date;
 
-    private FoodRepositoryImpl (FoodRemoteDataSource remoteSource, FoodLoaclDataBase localDataSource)
+    private FoodRepositoryImpl (FoodRemoteDataSource remoteSource, FoodLoaclDataBase localDataSource,String date)
     {
         this.remoteSource=remoteSource;
         this.localDataSource=localDataSource;
+        this.date=date;
     }
 
     public static FoodRepositoryImpl getInstance(FoodRemoteDataSource remoteSource, FoodLoaclDataBase localDataSource){
         if (repo==null){
-            repo =new FoodRepositoryImpl(remoteSource,localDataSource);
+            repo =new FoodRepositoryImpl(remoteSource,localDataSource,"");
         }
         return repo;
     }
@@ -83,6 +86,26 @@ public class FoodRepositoryImpl implements FoodRepository{
     public void checkFoodExists(Food food) {
         localDataSource.checkProductExists(food);
 
+    }
+
+    @Override
+    public LiveData<List<FoodPlan>> getPlannedFood(String date) {
+        return localDataSource.getPlannedFood(date);
+    }
+
+    @Override
+    public void insertFoodPlan(FoodPlan foodPlan) {
+        localDataSource.insertFoodPlan(foodPlan);
+    }
+
+    @Override
+    public void deleteFoodPlan(FoodPlan foodPlan) {
+        localDataSource.deleteFoodPlan(foodPlan);
+    }
+
+    @Override
+    public void updateFoodPlan(FoodPlan foodPlan) {
+        localDataSource.updateFoodPlan(foodPlan);
     }
 
 

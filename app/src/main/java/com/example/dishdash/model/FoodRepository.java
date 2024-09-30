@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.FoodPlan;
 import com.example.dishdash.network.NetworkCallback;
 
 import java.util.List;
@@ -23,4 +24,9 @@ public interface FoodRepository {
     public void deleteFood(Food food);
     public void checkFoodExists(Food food);
 
+
+    public LiveData<List<FoodPlan>> getPlannedFood(String date);
+    public void insertFoodPlan(FoodPlan foodPlan);
+    public void deleteFoodPlan(FoodPlan foodPlan);
+    public void updateFoodPlan(FoodPlan foodPlan);
 }

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
-import com.example.dishdash.CalenderFragment;
+import com.example.dishdash.calendar.view.CalenderFragment;
 import com.example.dishdash.favourite.view.FavFragment;
 import com.example.dishdash.R;
 import com.example.dishdash.searchfragment.view.SearchFragment;

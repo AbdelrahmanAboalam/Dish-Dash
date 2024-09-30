@@ -1,6 +1,7 @@
 package com.example.dishdash.model.response;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -29,7 +30,7 @@ public class FoodPlan implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-
+    @ColumnInfo(name = "date")
     private String date;
 
     public String getDate() {

@@ -29,7 +29,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     OnFoodClickListener favListener ;
 
 
-    public IngredientsAdapter(Context context,List<Ingredient>values,List<String> ingret,List<String>mesure,OnFoodClickListener favListener) {
+    public IngredientsAdapter(Context context,List<Ingredient>values,OnFoodClickListener favListener) {
         this.context = context;
         this.values=values;
         this.favListener = favListener;

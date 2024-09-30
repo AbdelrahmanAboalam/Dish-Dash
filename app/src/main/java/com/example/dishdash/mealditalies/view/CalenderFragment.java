@@ -21,6 +21,17 @@ import java.util.Calendar;
 
 
 public class CalenderFragment extends DialogFragment {
+    private OnDateSelectedListener listener;
+
+    // Interface for communicating with the parent fragment
+    public interface OnDateSelectedListener {
+        void onDateSelected(String date);
+    }
+
+    // This method allows the parent fragment to set the listener
+    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -46,10 +57,12 @@ public class CalenderFragment extends DialogFragment {
             int month = datePicker.getMonth() + 1; // Month is 0-indexed
             int year = datePicker.getYear();
 
-            // Pass selected date to parent fragment
-            Bundle result = new Bundle();
-            result.putString("selectedDate", day + "/" + month + "/" + year);
-            getParentFragmentManager().setFragmentResult("requestKey", result);
+            String selectedDate = day + "/" + month + "/" + year;
+
+            // Call the listener to notify the parent fragment
+            if (listener != null) {
+                listener.onDateSelected(selectedDate);
+            }
 
             // Dismiss dialog
             dialog.dismiss();
@@ -57,4 +70,4 @@ public class CalenderFragment extends DialogFragment {
 
         return dialog;
     }
-    }
+}
