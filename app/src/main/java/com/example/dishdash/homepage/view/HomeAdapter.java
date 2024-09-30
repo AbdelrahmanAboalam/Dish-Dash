@@ -43,7 +43,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         public ViewHolder(@NonNull View v) {
             super(v);
             layout = v;
-            img = v.findViewById(R.id.img);
+            img = v.findViewById(R.id.imgbtn);
             txtView = v.findViewById(R.id.textView);
             constraintLayout = v.findViewById(R.id.main);
         }

@@ -100,8 +100,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rec2"
-            android:layout_width="381dp"
-            android:layout_height="142dp"
+            android:layout_width="400dp"
+            android:layout_height="229dp"
             android:layout_marginTop="28dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -117,5 +117,15 @@
             android:text="Button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+        <ImageButton
+            android:id="@+id/imgbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toEndOf="@+id/btnFav"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:srcCompat="@drawable/calendar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

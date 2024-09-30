@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +29,14 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.R;
 import com.example.dishdash.db.FoodLocalDataSourceImp;
 import com.example.dishdash.model.FoodRepositoryImpl;
+import com.example.dishdash.model.response.Converter;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.FoodPlan;
+import com.example.dishdash.model.response.Ingredient;
 import com.example.dishdash.network.FoodRempteDataSourceImpl;
 import com.example.dishdash.searchfragment.presenter.SearchPresenter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +47,14 @@ public class MealFragment extends Fragment implements OnFoodClickListener ,MealV
 
 private static final String TAG = "track l moseba";
     FoodRepositoryImpl favpresnter;
-    SearchPresenter serprsenter;
 
     ImageView mealImage;
     TextView mealName;
     TextView instruction;
     WebView webView;
     Button btnFav;
+    ImageButton imgbtn;
+    private String selectedDate;
 
 
     private RecyclerView recyclerView;
@@ -81,12 +88,30 @@ private static final String TAG = "track l moseba";
         View view = inflater.inflate(R.layout.fragment_meal, container, false);
         initUI(view);
 
+
+        imgbtn = view.findViewById(R.id.imgbtn);
+        imgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().setFragmentResultListener("requestKey", getActivity(), new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                        selectedDate = result.getString("selectedDate");
+                        Toast.makeText(getContext(), selectedDate, Toast.LENGTH_SHORT).show();
+                        FoodPlan foodPlan = Converter.convertToPlanClass(food, selectedDate);
+                    }
+                });
+                CalenderFragment dialogFragment = new CalenderFragment();
+                dialogFragment.show(getParentFragmentManager(), "calendarDialog");
+            }
+        });
+
+        ingredientsAdapter = new IngredientsAdapter(getActivity(),new ArrayList<>(),food.getIngretians(),food.getMesures(),this);
         recyclerView.setHasFixedSize(true);
         linearLayout = new LinearLayoutManager(getActivity());
-        ingredientsAdapter = new IngredientsAdapter(getActivity(), new ArrayList<>(),this);
         linearLayout.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayout);
-        recyclerView.setAdapter(ingredientsAdapter);
+
 
         btnFav=view.findViewById(R.id.btnFav);
         mealImage = view.findViewById(R.id.imageView);
@@ -98,11 +123,11 @@ private static final String TAG = "track l moseba";
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
-//        List<Ingredient> ingredientPojos = getIngList(food);
+        List<Ingredient> ingredientPojos = getIngList(food);
 
-//        ingredientsAdapter.setList2(ingredientPojos);
-//        recyclerView.setAdapter(ingredientsAdapter);
-//        ingredientsAdapter.notifyDataSetChanged();
+        ingredientsAdapter.setList2(ingredientPojos);
+        recyclerView.setAdapter(ingredientsAdapter);
+        ingredientsAdapter.notifyDataSetChanged();
 
         Glide.with(this).load(food.getMealThumbnail()).apply(new RequestOptions().override(200,200)
                 .placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_foreground))
@@ -149,6 +174,8 @@ private static final String TAG = "track l moseba";
 
     }
 
+
+
     private void initUI(View view) {
         recyclerView = view.findViewById(R.id.rec2);
     }
@@ -174,8 +201,7 @@ private static final String TAG = "track l moseba";
 
     @Override
     public void showData(List<Food> food) {
-        ingredientsAdapter.setList(food);
-        ingredientsAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -186,34 +212,28 @@ private static final String TAG = "track l moseba";
         dialog.show();
     }
 
-    @Override
-    public void showIng(Food food) {
-//        List<Ingredient> ingredientPojos = getIngList(food);
-//        Log.i(TAG, "showIng: "+ingredientPojos);
-//        ingredientsAdapter.setList2(ingredientPojos);
-//        ingredientsAdapter.notifyDataSetChanged();
+
+
+
+    private List<Ingredient> getIngList(Food food) {
+        List<Ingredient> ingList =  new ArrayList<>();
+        for (int i =1 ; i <= 10; i++) {
+            try {
+                String ingredient = (String) food.getClass().getMethod("getIngredient" + i).invoke(food);
+                String measure = (String) food.getClass().getMethod("getMeasure" + i).invoke(food);
+                if (ingredient != null && !ingredient.isEmpty() && measure != null && !measure.isEmpty()) {
+                    String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredient + ".png";
+                    ingList.add(new Ingredient(ingredient, measure, imageUrl));
+                    Log.i(TAG, "getIngList: " + ingList);
+                }
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e )
+            {
+                Log.i(TAG, "u in catch RUN ");
+                // Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        return ingList;
     }
-
-
-//    private List<Ingredient> getIngList(Food food) {
-//        List<Ingredient> ingList =  new ArrayList<>();
-//        for (int i =1 ; i <= 10; i++) {
-//            try {
-//                String ingredient = (String) food.getClass().getMethod("getIngredient" + i).invoke(food);
-//                String measure = (String) food.getClass().getMethod("getMeasure" + i).invoke(food);
-//                if (ingredient != null && !ingredient.isEmpty() && measure != null && !measure.isEmpty()) {
-//                    String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredient + ".png";
-//                    ingList.add(new Ingredient(ingredient, measure, imageUrl));
-//                    Log.i(TAG, "getIngList: " + ingList);
-//                }
-//            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e )
-//            {
-//                Log.i(TAG, "u in catch RUN ");
-//                // Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//        }
-//
-//        return ingList;
-//    }
 }

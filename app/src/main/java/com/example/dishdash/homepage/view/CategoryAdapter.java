@@ -19,7 +19,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.R;
 import com.example.dishdash.model.response.Category;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
@@ -56,7 +55,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         public ViewHolder(@NonNull View v) {
             super(v);
             layout = v;
-            img = v.findViewById(R.id.img);
+            img = v.findViewById(R.id.imgbtn);
             txtView = v.findViewById(R.id.textView);
             constraintLayout = v.findViewById(R.id.main);
         }

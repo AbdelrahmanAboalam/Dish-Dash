@@ -7,17 +7,38 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
-@Entity(tableName = "food_table")
+@Entity(tableName = "food_plan")
 
-public class Food implements Serializable {
-    @PrimaryKey
+public class FoodPlan implements Serializable {
     @NonNull
+    @PrimaryKey(autoGenerate = true)
+    private int id ;
+
     @SerializedName("idMeal")
     private String mealId;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @SerializedName("strMeal")
     private String mealName;
@@ -158,7 +179,7 @@ public class Food implements Serializable {
 
     private boolean isFav;
 
-    public Food(@NonNull String mealId, String mealName, String drinkAlternate, String category, String area, String instructions, String mealThumbnail, String tags, String youtubeUrl, String ingredient1, String ingredient2, String ingredient3, String ingredient4, String ingredient5, String ingredient6, String ingredient7, String ingredient8, String ingredient9, String ingredient10, String ingredient11, String ingredient12, String ingredient13, String ingredient14, String ingredient15, String ingredient16, String ingredient17, String ingredient18, String ingredient19, String ingredient20, String measure1, String measure2, String measure3, String measure4, String measure5, String measure6, String measure7, String measure8, String measure9, String measure11, String measure12, String measure13, String measure14, String measure15, String measure16, String measure17, String measure18, String measure19, String measure20, String measure10, String source, String imageSource, String creativeCommonsConfirmed, String dateModified, boolean isFav) {
+    public FoodPlan(@NonNull String mealId, String mealName, String drinkAlternate, String category, String area, String instructions, String mealThumbnail, String tags, String youtubeUrl, String ingredient1, String ingredient2, String ingredient3, String ingredient4, String ingredient5, String ingredient6, String ingredient7, String ingredient8, String ingredient9, String ingredient10, String ingredient11, String ingredient12, String ingredient13, String ingredient14, String ingredient15, String ingredient16, String ingredient17, String ingredient18, String ingredient19, String ingredient20, String measure1, String measure2, String measure3, String measure4, String measure5, String measure6, String measure7, String measure8, String measure9, String measure11, String measure12, String measure13, String measure14, String measure15, String measure16, String measure17, String measure18, String measure19, String measure20, String measure10, String source, String imageSource, String creativeCommonsConfirmed, String dateModified, boolean isFav,String date) {
         this.mealId = mealId;
         this.mealName = mealName;
         this.drinkAlternate = drinkAlternate;
@@ -213,6 +234,7 @@ public class Food implements Serializable {
         this.creativeCommonsConfirmed = creativeCommonsConfirmed;
         this.dateModified = dateModified;
         this.isFav = false;
+        this.date = date;
     }
 
     public String getIngredient11() {
@@ -375,42 +397,7 @@ public class Food implements Serializable {
         this.measure20 = measure20;
     }
 
-    //    public Food(String mealId, String mealName, String drinkAlternate, String category, String area, String instructions, String mealThumbnail, String tags, String youtubeUrl, String ingredient1, String ingredient2, String ingredient3, String ingredient4, String ingredient5, String ingredient6, String ingredient7, String ingredient8, String ingredient9, String ingredient10, String measure1, String measure2, String measure3, String measure4, String measure5, String measure6, String measure7, String measure8, String measure9, String measure10, String source, String imageSource, String creativeCommonsConfirmed, String dateModified, boolean isFav) {
-//        this.mealId = mealId;
-//        this.mealName = mealName;
-//        this.drinkAlternate = drinkAlternate;
-//        this.category = category;
-//        this.area = area;
-//        this.instructions = instructions;
-//        this.mealThumbnail = mealThumbnail;
-//        this.tags = tags;
-//        this.youtubeUrl = youtubeUrl;
-//        this.ingredient1 = ingredient1;
-//        this.ingredient2 = ingredient2;
-//        this.ingredient3 = ingredient3;
-//        this.ingredient4 = ingredient4;
-//        this.ingredient5 = ingredient5;
-//        this.ingredient6 = ingredient6;
-//        this.ingredient7 = ingredient7;
-//        this.ingredient8 = ingredient8;
-//        this.ingredient9 = ingredient9;
-//        this.ingredient10 = ingredient10;
-//        this.measure1 = measure1;
-//        this.measure2 = measure2;
-//        this.measure3 = measure3;
-//        this.measure4 = measure4;
-//        this.measure5 = measure5;
-//        this.measure6 = measure6;
-//        this.measure7 = measure7;
-//        this.measure8 = measure8;
-//        this.measure9 = measure9;
-//        this.measure10 = measure10;
-//        this.source = source;
-//        this.imageSource = imageSource;
-//        this.creativeCommonsConfirmed = creativeCommonsConfirmed;
-//        this.dateModified = dateModified;
-//        this.isFav = false;
-//    }
+
     public void setFav(boolean fav) {
         isFav = fav;
     }
@@ -418,31 +405,7 @@ public class Food implements Serializable {
         return isFav;
     }
 
-    // Constructors
-//    public Food(String mealId) {
-//        this.mealId = mealId;
-//    }
 
-   /* public List<Ingredient> getIngredients() {
-        List<Ingredient> ingredients = new ArrayList<>();
-        Field[] fields = this.getClass().getDeclaredFields();
-
-        for (Field field : fields) {
-            if (field.getName().startsWith("ingredient")) {
-                try {
-                    field.setAccessible(true);
-                    String value = (String) field.get(this);
-                    if (value != null && !value.isEmpty()) {
-                        ingredients.add(new Ingredient(value));
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return ingredients;
-    }*/
 
 
 

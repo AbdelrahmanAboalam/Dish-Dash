@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.R;
-import com.example.dishdash.mealditalies.view.MealFragment;
-import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Food;
 
 import java.util.List;
@@ -43,7 +41,7 @@ public class AllCategoriesAdapter extends RecyclerView.Adapter<AllCategoriesAdap
         public ViewHolder(@NonNull View v) {
             super(v);
             layout = v;
-            img = v.findViewById(R.id.img);
+            img = v.findViewById(R.id.imgbtn);
             txtView = v.findViewById(R.id.textView);
             constraintLayout = v.findViewById(R.id.main);
         }

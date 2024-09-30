@@ -9,5 +9,4 @@ public interface MealView {
     public void showData(List<Food> food);
     public void showErrMsg(String error);
 
-    public void showIng(Food food);
 }

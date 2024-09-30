@@ -27,7 +27,7 @@
 
             <!-- Image -->
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/imgbtn"
                 android:layout_width="92dp"
                 android:layout_height="43dp"
                 android:scaleType="centerCrop"
