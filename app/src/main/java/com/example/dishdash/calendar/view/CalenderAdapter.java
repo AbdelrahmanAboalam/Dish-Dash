@@ -20,6 +20,9 @@ import com.example.dishdash.calendar.presenter.CalendarPresenter;
 import com.example.dishdash.favourite.presenter.FavouritePresenter;
 import com.example.dishdash.favourite.view.FavFoodAdapter;
 import com.example.dishdash.favourite.view.OnFavClickListener;
+import com.example.dishdash.homepage.view.HomePageActivity;
+import com.example.dishdash.mealditalies.view.MealFragment;
+import com.example.dishdash.model.response.Converter;
 import com.example.dishdash.model.response.Food;
 import com.example.dishdash.model.response.FoodPlan;
 
@@ -61,6 +64,29 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.ViewHo
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.imageView);
         holder.txtTitle.setText(food.getMealName());
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Food food1 = Converter.convertToFoodClass(food);
+                MealFragment mealFragment=MealFragment.getInstance(food1);
+
+                ((HomePageActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container,mealFragment)
+                        .addToBackStack(null).commit();
+            }
+            });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Food food1 = Converter.convertToFoodClass(food);
+                MealFragment mealFragment=MealFragment.getInstance(food1);
+
+                ((HomePageActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container,mealFragment)
+                        .addToBackStack(null).commit();
+            }
+        });
+
     }
 
     @Override
@@ -81,7 +107,7 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.ViewHo
             layout=itemView;
             txtTitle=itemView.findViewById(R.id.textView);
             imageView=itemView.findViewById(R.id.imgbtn);
-            btnRemoveFromFav=itemView.findViewById(R.id.remove_fav_button);
+//            btnRemoveFromFav=itemView.findViewById(R.id.remove_fav_button);
         }
     }
 }
