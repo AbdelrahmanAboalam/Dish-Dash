@@ -96,7 +96,6 @@ private static final String TAG = "track l moseba";
             public void onClick(View view) {
                 CalenderFragment dialogFragment = new CalenderFragment();
                 dialogFragment.setOnDateSelectedListener(selectedDate -> {
-                    // Use the selected date to create a food plan and update the database
                     Toast.makeText(getContext(), "Selected date: " + selectedDate, Toast.LENGTH_SHORT).show();
                     foodPlan = Converter.convertToPlanClass(food, selectedDate);
                     favpresnter.insertFoodPlan(foodPlan);

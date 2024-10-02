@@ -7,4 +7,8 @@ public interface SearchPresenter {
     public void getFoodName(String name);
     public void getFoodByCountry(String country);
     public void getFoodByIngredient(String ingredent);
+    public void getCategory();
+    public void filterCategories(String query);
+
+    public void getCountries();
 }

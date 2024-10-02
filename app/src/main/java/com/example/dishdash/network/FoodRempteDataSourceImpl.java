@@ -3,6 +3,7 @@ package com.example.dishdash.network;
 import androidx.annotation.NonNull;
 
 import com.example.dishdash.model.response.Category;
+import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
 
 import retrofit2.Call;
@@ -131,6 +132,23 @@ public class FoodRempteDataSourceImpl implements FoodRemoteDataSource {
             @Override
             public void onFailure(Call<ListResponse<Food>> call, Throwable throwable) {
                 networkCallBack.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallCountries(NetworkCallback<Country> networkCallback) {
+        foodService.getCountries().enqueue(new Callback<ListResponse<Country>>() {
+            @Override
+            public void onResponse(Call<ListResponse<Country>> call, Response<ListResponse<Country>> response) {
+                if (response.isSuccessful()&&response.body()!=null){
+                    networkCallback.onSuccessResult(response.body().allFood);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<Country>> call, Throwable throwable) {
+                networkCallback.onFailureResult((throwable.getMessage()));
             }
         });
     }

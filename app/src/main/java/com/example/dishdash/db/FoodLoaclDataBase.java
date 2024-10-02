@@ -15,7 +15,6 @@ public interface FoodLoaclDataBase {
     void checkProductExists(Food food);
 
     LiveData<List<FoodPlan>> getPlannedFood(String date);
-//    List<FoodPlan> getPlannedFoodList(String date);
     void insertFoodPlan(FoodPlan foodPlan);
     void deleteFoodPlan(FoodPlan foodPlan);
     void updateFoodPlan(FoodPlan foodPlan);

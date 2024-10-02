@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.example.dishdash.db.FoodLoaclDataBase;
 import com.example.dishdash.db.FoodLocalDataSourceImp;
 import com.example.dishdash.model.response.Category;
+import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
 import com.example.dishdash.model.response.FoodPlan;
 import com.example.dishdash.network.FoodRemoteDataSource;
@@ -60,6 +61,11 @@ public class FoodRepositoryImpl implements FoodRepository{
     @Override
     public void getMealByName(String name, NetworkCallback<Food> callback) {
         remoteSource.makeNetworkCallMealByName(name,callback);
+    }
+
+    @Override
+    public void getCountries(NetworkCallback<Country> callback) {
+        remoteSource.makeNetworkCallCountries(callback);
     }
 
     @Override

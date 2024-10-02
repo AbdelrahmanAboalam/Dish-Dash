@@ -1,6 +1,7 @@
 package com.example.dishdash.network;
 
 import com.example.dishdash.model.response.Category;
+import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
 
 import retrofit2.Call;
@@ -29,5 +30,6 @@ public interface FoodService {
     @GET("search.php")
     Call<ListResponse<Food>> getFoodByName(@Query("s") String foodName);
 
-
+    @GET("list.php?a=list")
+    Call<ListResponse<Country>> getCountries();
 }

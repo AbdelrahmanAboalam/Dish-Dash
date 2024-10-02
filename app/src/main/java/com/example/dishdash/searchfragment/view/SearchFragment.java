@@ -20,6 +20,8 @@ import com.example.dishdash.favourite.presenter.FavouritePresenterImp;
 import com.example.dishdash.favourite.view.FavFoodAdapter;
 import com.example.dishdash.mealditalies.view.MealFragment;
 import com.example.dishdash.model.FoodRepositoryImpl;
+import com.example.dishdash.model.response.Category;
+import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
 import com.example.dishdash.network.FoodRempteDataSourceImpl;
 import com.example.dishdash.searchfragment.presenter.SearchPresenter;
@@ -44,6 +46,8 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
 
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
                 FoodLocalDataSourceImp.getInstance(getContext())));
 
 
-        serAdapter=new SerAdapter(getContext(),new ArrayList<Food>(),this);
+        serAdapter=new SerAdapter(getContext(),new ArrayList<Food>(),new ArrayList<>(),this);
         layoutManager=new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -70,10 +74,13 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
 
                 switch (tap){
                     case 0: searchView.setQueryHint("Please Enter Meal name");
+                            searchPresenter.getFoodName(searchView.getQuery().toString());
                     break;
                     case 1: searchView.setQueryHint("Please Enter Country name");
+                            searchPresenter.getCountries();
                         break;
                     case 2: searchView.setQueryHint("Please Enter Category name");
+                            searchPresenter.getCategory();
                         break;
                     case 3: searchView.setQueryHint("Please Enter Ingretient name");
                         break;
@@ -111,6 +118,21 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
 
             @Override
             public boolean onQueryTextChange(String s) {
+                switch (tap) {
+                    case 0:
+                        searchPresenter.getFoodName(searchView.getQuery().toString());
+                        break;
+                    case 1:
+                        searchPresenter.getFoodByCountry(searchView.getQuery().toString());
+                        break;
+                    case 2:
+                        searchPresenter.filterCategories(searchView.getQuery().toString());
+                        break;
+                    case 3:
+                        searchPresenter.getFoodByIngredient(searchView.getQuery().toString());
+                        break;
+                }
+
                 return false;
             }
         });
@@ -121,6 +143,16 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
     @Override
     public void onMealClick(Food food) {
         searchPresenter.getFoodById(food.getMealId());
+    }
+
+    @Override
+    public void onCategoryClick(String id) {
+        searchPresenter.getFoodByCategory(id);
+    }
+
+    @Override
+    public void onCountryCkick(String id) {
+        searchPresenter.getFoodByCountry(id);
     }
 
     @Override
@@ -145,5 +177,32 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
         builder.setMessage(error).setTitle("An Error Occurred");
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void showCountryData(List<Country> meals) {
+        serAdapter.setList3(meals);
+        serAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCategoryData(List<Category> meals) {
+        serAdapter.setList2(meals);
+        serAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCategoryErrMsg(String error) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(error).setTitle("An Error Occurred");
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void updateCategoryList(List<Category> filteredCategories) {
+        serAdapter.updateCategories(filteredCategories);
+        serAdapter.notifyDataSetChanged();
+
     }
 }

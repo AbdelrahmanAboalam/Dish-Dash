@@ -17,9 +17,7 @@ public class CalendarPresenterImpl implements CalendarPresenter{
         this._view = _view;
         this._repo = _repo;
     }
-//    public void setDate(String date){
-//        this.date=date;
-//    }
+
     @Override
     public LiveData<List<FoodPlan>> getPlanedFood(String date) {
         return _repo.getPlannedFood(date);

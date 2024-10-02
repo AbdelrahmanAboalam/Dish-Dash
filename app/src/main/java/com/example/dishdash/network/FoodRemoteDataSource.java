@@ -1,6 +1,7 @@
 package com.example.dishdash.network;
 
 import com.example.dishdash.model.response.Category;
+import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
 
 public interface FoodRemoteDataSource {
@@ -10,6 +11,7 @@ public interface FoodRemoteDataSource {
     public void makeNetworkCallCountryMealById(String country , NetworkCallback<Food> networkCallBack);
     public void makeNetworkCallMealByName(String name , NetworkCallback<Food> networkCallBack);
 
+    public void makeNetworkCallCountries(NetworkCallback<Country> networkCallback);
     public void makeNetworkCallIngradiant(String ingrediant , NetworkCallback<Food> networkCallBack);
     public void makeNetworkCallFoodById(String id , NetworkCallback<Food> networkCallBack);
 
