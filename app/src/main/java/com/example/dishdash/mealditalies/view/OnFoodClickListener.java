@@ -5,5 +5,8 @@ import com.example.dishdash.model.response.Food;
 public interface OnFoodClickListener {
     void onLayoutClick(Food food);
     void onAddToFavClick(Food food);
+    void onRemoveFavClick(Food food);
+    void onCheckClick(Food food);
+
 
 }

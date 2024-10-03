@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dishdash.R;
@@ -35,6 +36,7 @@ public class FavFragment extends Fragment implements OnFavClickListener,FavView 
     private FavFoodAdapter favProductAdapter;
     LinearLayoutManager layoutManager;
 
+    TextView title;
     LiveData<List<Food>> favFood;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,9 @@ public class FavFragment extends Fragment implements OnFavClickListener,FavView 
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_fav, container, false);
+
+        title=getActivity().findViewById(R.id.fragment_title);
+        title.setText("Favourite Page");
 
         recyclerViewFav=view.findViewById(R.id.recFav);
         favouritePresenter =new FavouritePresenterImp( this, FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance(),

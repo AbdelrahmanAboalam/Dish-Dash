@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.R;
+import com.example.dishdash.homepage.presenter.HomePresenter;
+import com.example.dishdash.mealditalies.view.MealFragment;
 import com.example.dishdash.model.response.Food;
 
 import java.util.List;
@@ -24,9 +26,18 @@ public class AllCategoriesAdapter extends RecyclerView.Adapter<AllCategoriesAdap
     private static final String TAG = "RecyclerView2";
     private final Context context;
     private List<Food> allcategoryList;
-    public AllCategoriesAdapter(Context context, List<Food> categoryList) {
+    HomePresenter presenter;
+    OnClickListener listener;
+
+
+
+//    private OnFoodClickListener listener;
+
+
+    public AllCategoriesAdapter(Context context, List<Food> categoryList,OnClickListener listener) {
         this.context = context;
         this.allcategoryList = categoryList;
+        this.listener = listener;
     }
     public void setList(List<Food> categoryList){
         this.allcategoryList = categoryList;
@@ -65,16 +76,19 @@ public class AllCategoriesAdapter extends RecyclerView.Adapter<AllCategoriesAdap
                             .error(R.drawable.ic_launcher_foreground))
                     .into(holder.img);
             holder.txtView.setText(allcategoryList.get(position).getMealName());
-//            holder.img.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    MealFragment mealFragment=MealFragment.getInstance(allcategoryList.get(position));
-//
-//                    ((HomePageActivity) context).getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.fragment_container,mealFragment)
-//                            .addToBackStack(null).commit();
-//                }
-//            });
+            holder.img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onFoodClick(allcategoryList.get(position).getMealId());
+                }
+            });
+            holder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onFoodClick(allcategoryList.get(position).getMealId());
+                }
+            });
+
         }
 
         @Override

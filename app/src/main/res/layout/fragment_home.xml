@@ -17,38 +17,134 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- TextView for the first section title -->
+
             <!-- First RecyclerView for the top section -->
+            <TextView
+                android:id="@+id/section1Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="16dp"
+                android:text="Meal of the day"
+                android:textColor="#000"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recView"
                 android:layout_width="206dp"
                 android:layout_height="235dp"
                 android:layout_margin="8dp"
                 android:background="#C2D1C5"
-                app:layout_constraintBottom_toTopOf="@id/recView2"
+                app:layout_constraintBottom_toTopOf="@id/section2Title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.45"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/section1Title" />
+
+            <!-- TextView for the second section title -->
 
             <!-- Second RecyclerView for the bottom section -->
+
+            <TextView
+                android:id="@+id/section2Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Categories"
+                android:textColor="#000"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recView" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#C2D1C5"
-                app:layout_constraintBottom_toTopOf="@id/recView3"
+                app:layout_constraintBottom_toTopOf="@id/txtCategories"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recView" />
+                app:layout_constraintTop_toBottomOf="@id/section2Title" />
+
+            <!-- TextView for the third section title -->
 
             <!-- Third RecyclerView for the third section -->
+            <TextView
+                android:id="@+id/txtCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Section 3"
+                android:textColor="#000"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/section2Title"
+                app:layout_constraintTop_toBottomOf="@id/recView2" />
+
+            <!-- TextView for the fourth section title -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#C2D1C5"
+                app:layout_constraintBottom_toTopOf="@id/txtCountry"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtCategories" />
+
+            <TextView
+                android:id="@+id/txtCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Countries"
+                android:textColor="#000"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/txtCategories"
+                app:layout_constraintTop_toBottomOf="@id/recView3" />
+
+            <!-- Fourth RecyclerView for the fourth section -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#C2D1C5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recView2" />
+                app:layout_constraintTop_toBottomOf="@id/txtCountry"
+                app:layout_constraintVertical_bias="0.033" />
+
+            <TextView
+                android:id="@+id/txtCountries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Section 5"
+                android:textColor="#000"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/txtCountry"
+                app:layout_constraintTop_toBottomOf="@id/recView4" />
+
+            <!-- Fourth RecyclerView for the fourth section -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#C2D1C5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtCountries" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="180dp"
+                android:layout_marginTop="72dp"
+                app:layout_constraintStart_toStartOf="@+id/recView3"
+                app:layout_constraintTop_toTopOf="@+id/recView3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

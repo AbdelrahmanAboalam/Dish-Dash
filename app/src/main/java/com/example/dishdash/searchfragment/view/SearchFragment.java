@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.example.dishdash.R;
 import com.example.dishdash.db.FoodLocalDataSourceImp;
@@ -39,6 +40,7 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
     private RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
 
+    TextView title;
     int tap=0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,9 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        title=getActivity().findViewById(R.id.fragment_title);
+        title.setText("Search Page");
 
         recyclerView=view.findViewById(R.id.recView4);
         TabLayout tableLayout=view.findViewById(R.id.tabLayout);

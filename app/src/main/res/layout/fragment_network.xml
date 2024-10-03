@@ -1,0 +1,35 @@
+<!-- fragment_no_connection.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <!-- Message for no connection -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Internet Connection"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Retry Icon Button -->
+    <ImageButton
+        android:id="@+id/btnRetry"
+        android:layout_width="46dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="Retry"
+        android:src="@drawable/retry" />
+
+    <!-- Navigate to Favorites Button -->
+    <Button
+        android:id="@+id/btnGoToFavorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Favorites"
+        android:layout_marginTop="20dp" />
+</LinearLayout>

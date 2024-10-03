@@ -46,6 +46,7 @@ public class MealFragment extends Fragment implements OnFoodClickListener ,MealV
     private Food food;
     private FoodPlan foodPlan;
 
+    TextView title;
 private static final String TAG = "track l moseba";
     FoodRepositoryImpl favpresnter;
 
@@ -53,7 +54,7 @@ private static final String TAG = "track l moseba";
     TextView mealName;
     TextView instruction;
     WebView webView;
-    Button btnFav;
+    ImageButton btnFav;
     ImageButton imgbtn;
     private String selectedDate;
 
@@ -77,7 +78,9 @@ private static final String TAG = "track l moseba";
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             food = (Food)getArguments().getSerializable(ARG_FOOD_NAME);
+
             favpresnter=FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance(), FoodLocalDataSourceImp.getInstance(getContext()));
+            onCheckClick(food);
         }
     }
 
@@ -89,6 +92,8 @@ private static final String TAG = "track l moseba";
         View view = inflater.inflate(R.layout.fragment_meal, container, false);
         initUI(view);
 
+        title=getActivity().findViewById(R.id.fragment_title);
+        title.setText("Meal Ditalies");
 
         imgbtn = view.findViewById(R.id.imgbtn);
         imgbtn.setOnClickListener(new View.OnClickListener() {
@@ -148,18 +153,26 @@ private static final String TAG = "track l moseba";
 
         String youtubeEmbedUrl = "https://www.youtube.com/embed/" + getYoutubeVideoId(food.getYoutubeUrl());
         webView.loadUrl(youtubeEmbedUrl);
+
         if(food.isFav()){
-            btnFav.setEnabled(false);
+            btnFav.setImageResource(R.drawable.heart_filled);
         }
         else{
-            btnFav.setEnabled(true);
+            btnFav.setImageResource(R.drawable.heart_outline);
         }
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Hi from button" + " added to cart", Toast.LENGTH_SHORT).show();
-                onAddToFavClick(food);
-                btnFav.setEnabled(false);
+                if(!food.isFav()) {
+                    Toast.makeText(getContext(), food.getMealName()+" Added To Favourite", Toast.LENGTH_SHORT).show();
+                    onAddToFavClick(food);
+                    btnFav.setImageResource(R.drawable.heart_filled);
+                }
+                else{
+                    Toast.makeText(getContext(), food.getMealName()+" Removed To Favourite", Toast.LENGTH_SHORT).show();
+                    onRemoveFavClick(food);
+                    btnFav.setImageResource(R.drawable.heart_outline);
+                }
             }
         });
         return view;
@@ -198,6 +211,16 @@ private static final String TAG = "track l moseba";
         favpresnter.insertFood(food);
     }
 
+    @Override
+    public void onRemoveFavClick(Food food) {
+        food.setFav(false);
+        favpresnter.deleteFood(food);
+    }
+
+    @Override
+    public void onCheckClick(Food food) {
+        favpresnter.checkFoodExists(food);
+    }
 
 
     @Override

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dishdash.R;
@@ -38,7 +39,9 @@ public class CalenderFragment extends Fragment implements CalendarView,OnCalenda
     private RecyclerView recyclerViewFav;
     private CalenderAdapter adapter;
     LinearLayoutManager layoutManager;
-    private String date="";
+
+    TextView title;
+
     LiveData<List<FoodPlan>> plannedFood;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,8 @@ public class CalenderFragment extends Fragment implements CalendarView,OnCalenda
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calender, container, false);
 
+        title=getActivity().findViewById(R.id.fragment_title);
+        title.setText("Planned Meals");
 
         DatePicker datePicker = view.findViewById(R.id.datePicker2);
         Calendar calendar = Calendar.getInstance();

@@ -4,6 +4,7 @@ import com.example.dishdash.homepage.view.HomeActivityInterface;
 import com.example.dishdash.homepage.view.HomePageActivity;
 import com.example.dishdash.model.FoodRepository;
 import com.example.dishdash.model.response.Category;
+import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
 import com.example.dishdash.network.NetworkCallback;
 
@@ -52,6 +53,41 @@ public class HomePresenterImpl implements HomePresenter {
 
         }
 
+    private class CountryCallBack implements NetworkCallback<Country> {
+        @Override
+        public void onSuccessResult(List<Country> pojo) {
+            _view.showCountry(pojo);
+        }
+
+        @Override
+        public void onFailureResult(String errorMsg) {
+            _view.showErrMsg(errorMsg);
+        }
+    }
+
+    private class FoodfromCategory implements NetworkCallback<Food> {
+        @Override
+        public void onSuccessResult(List<Food> pojo) {
+            _view.showFood(pojo);
+        }
+
+        @Override
+        public void onFailureResult(String errorMsg) {
+            _view.showErrMsg(errorMsg);
+        }
+    }
+
+    private class FoodfromCountry implements NetworkCallback<Food> {
+        @Override
+        public void onSuccessResult(List<Food> pojo) {
+            _view.showFoodFromCountry(pojo);
+        }
+
+        @Override
+        public void onFailureResult(String errorMsg) {
+            _view.showErrMsg(errorMsg);
+        }
+    }
 
     public HomePresenterImpl(HomeActivityInterface _view, FoodRepository _repo) {
         this._view = _view;
@@ -73,5 +109,24 @@ public class HomePresenterImpl implements HomePresenter {
         _repo.getMealByCategory(id,new CategoryFoodCallback());
     }
 
+    @Override
+    public void getFoodById(String id) {
+        _repo.getMealById(id,new FoodfromCategory());
+    }
+
+    @Override
+    public void getCountries() {
+        _repo.getCountries(new CountryCallBack());
+    }
+
+    @Override
+    public void getFoodByCountry(String id) {
+        _repo.getMealByCountry(id,new FoodfromCountry());
+    }
+
+//    @Override
+//    public void getFoodById(String id) {
+//        _repo.getMealById(id,new FoodfromCategory());
+//    }
 
 }

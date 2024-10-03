@@ -26,21 +26,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private final Context context;
     private List<Category> categoryList;
     public  static String id = "Beef";
-    AllCategoriesAdapter allCategoriesAdapter;
+    private boolean pos =true;
+    TextView txtCategories;
+OnClickListener listener;
 
-    public interface OnCategoryClickListener {
-        void onCategoryClick(String categoryId);
-    }
-
-    private OnCategoryClickListener listener;
-
-    public void setOnCategoryClickListener(OnCategoryClickListener listener) {
-        this.listener = listener;
-    }
-
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    public CategoryAdapter(Context context, List<Category> categoryList,OnClickListener listener,TextView txtCategories) {
         this.context = context;
         this.categoryList = categoryList;
+        this.listener = listener;
+        this.txtCategories=txtCategories;
     }
     public void setList(List<Category> categoryList){
         this.categoryList = categoryList;
@@ -60,9 +54,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             constraintLayout = v.findViewById(R.id.main);
         }
     }
-
-
-
     @NonNull
     @Override
     public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup recyclerView, int viewType) {
@@ -75,6 +66,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        if (position==0 && pos==true){
+            listener.onCategoryClick(categoryList.get(position).getStrCategory());
+            txtCategories.setText(categoryList.get(position).getStrCategory()+" Meals");
+        }
         Glide.with(context).load(categoryList.get(position).getStrCategoryThumb())
                 .apply(new RequestOptions().override(200,200)
                         .placeholder(R.drawable.ic_launcher_background)
@@ -84,15 +79,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String categoryId = categoryList.get(position).getStrCategory();
-                CategoryAdapter.id = categoryId;
-
-                // Notify the listener (HomeFragment)
                 if (listener != null) {
-                    listener.onCategoryClick(categoryId);
-                }
+                    listener.onCategoryClick(categoryList.get(position).getStrCategory());
+                    txtCategories.setText(categoryList.get(position).getStrCategory()+" Meals");
 
-                Toast.makeText(view.getContext(), "Hi from button" + " added to cart", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

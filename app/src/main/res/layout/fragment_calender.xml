@@ -9,10 +9,9 @@
         android:id="@+id/datePicker2"
         android:layout_width="331dp"
         android:layout_height="404dp"
-        android:layout_marginTop="28dp"
-        android:background="#F69C9C"
+        android:layout_marginTop="4dp"
+        android:background="#C2D1C5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
