@@ -21,4 +21,5 @@ public interface FoodLoaclDataBase {
     void insertFoodPlan(FoodPlan foodPlan);
     void deleteFoodPlan(FoodPlan foodPlan);
     void updateFoodPlan(FoodPlan foodPlan);
+    void checkIfMealExistsOnDate(FoodPlan foodPlan,CheckCallBack checkCallBack);
 }

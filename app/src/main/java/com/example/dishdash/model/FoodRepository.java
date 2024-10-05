@@ -2,6 +2,7 @@ package com.example.dishdash.model;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.dishdash.db.CheckCallBack;
 import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
@@ -36,4 +37,6 @@ public interface FoodRepository {
     public void deleteFoodPlan(FoodPlan foodPlan);
     public void updateFoodPlan(FoodPlan foodPlan);
     public void updateFoodPlanbyId(String mealId, boolean isFav);
+
+    public void checkIfMealExistsOnDate2(FoodPlan foodPlan, CheckCallBack checkCallBack);
 }

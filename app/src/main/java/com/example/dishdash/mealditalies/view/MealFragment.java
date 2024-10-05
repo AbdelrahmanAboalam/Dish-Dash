@@ -25,7 +25,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.dishdash.R;
+import com.example.dishdash.db.CheckCallBack;
 import com.example.dishdash.db.FoodLocalDataSourceImp;
+import com.example.dishdash.mealditalies.presenter.MealsPresenter;
+import com.example.dishdash.mealditalies.presenter.MealsPresenterImp;
 import com.example.dishdash.model.FoodRepositoryImpl;
 import com.example.dishdash.model.response.Converter;
 import com.example.dishdash.model.response.Food;
@@ -46,6 +49,7 @@ public class MealFragment extends Fragment implements OnFoodClickListener, MealV
     private Food food;
     private FoodPlan foodPlan;
     private FoodRepositoryImpl favPresenter;
+    private MealsPresenterImp presenter;
 
     // UI
     private TextView title;
@@ -144,7 +148,12 @@ public class MealFragment extends Fragment implements OnFoodClickListener, MealV
         webView.loadUrl(youtubeEmbedUrl);
 
         // Set favorite button state
-        btnFav.setImageResource(food.isFav() ? R.drawable.heart_filled : R.drawable.heart_outline);
+        if(food.isFav()){
+            btnFav.setImageResource(R.drawable.heart_filled);
+        }
+        else{
+            btnFav.setImageResource(R.drawable.heart_outline);
+        }
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -241,9 +250,28 @@ public class MealFragment extends Fragment implements OnFoodClickListener, MealV
 
     @Override
     public void onDateSelected(String date) {
-        Toast.makeText(getContext(), "Selected date: " + date, Toast.LENGTH_SHORT).show();
         foodPlan = Converter.convertToPlanClass(food, date);
-        favPresenter.insertFoodPlan(foodPlan);
+         boolean[] flag = {false};
+        favPresenter.checkIfMealExistsOnDate2(foodPlan, new CheckCallBack() {
+            @Override
+            public void onMealCheckResult(boolean exists) {
+                if(!exists){
+//                    Toast.makeText(getContext(), "Selected date: " + date, Toast.LENGTH_SHORT).show();
+                    favPresenter.insertFoodPlan(foodPlan);
+                    foodPlan.setExist(true);
+                }else{
+//                    Toast.makeText(getContext(), "Meal already exists on this date.", Toast.LENGTH_SHORT).show();
+                    flag[0] =false;
+                }
+            }
+        });
+        if(!foodPlan.isExist()){
+            Toast.makeText(getContext(), "Selected date: " + date, Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getContext(), "Meal already exists on this date.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

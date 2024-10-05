@@ -96,16 +96,14 @@ public class FoodLocalDataSourceImp implements FoodLoaclDataBase{
         return foodDAO.getPlannedFood(date);
     }
 
-//    @Override
-//    public List<FoodPlan> getPlannedFoodList(String date) {
-//        return foodDAO.getPlannedFoodList(date);
-//    }
+
 
     @Override
     public void insertFoodPlan(FoodPlan foodPlan) {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                foodPlan.setExist(true);
                 foodDAO.insertFoodPlan(foodPlan);
             }
         }).start();
@@ -116,6 +114,7 @@ public class FoodLocalDataSourceImp implements FoodLoaclDataBase{
         new Thread(new Runnable() {
             @Override
             public void run() {
+                foodPlan.setExist(false);
                 foodDAO.deleteFoodPlan(foodPlan);
             }
         }).start();
@@ -130,4 +129,17 @@ public class FoodLocalDataSourceImp implements FoodLoaclDataBase{
             }
         }).start();
     }
+
+    @Override
+    public void checkIfMealExistsOnDate(FoodPlan foodPlan, CheckCallBack checkCallBack) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                 boolean exist =foodDAO.isMealExistsOnDate(foodPlan.getMealId(), foodPlan.getDate());
+                 foodPlan.setExist(exist);
+                 checkCallBack.onMealCheckResult(exist);
+            }
+        }).start();
+    }
+
 }

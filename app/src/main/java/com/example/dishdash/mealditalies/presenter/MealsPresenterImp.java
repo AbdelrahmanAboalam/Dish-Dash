@@ -1,5 +1,6 @@
 package com.example.dishdash.mealditalies.presenter;
 
+import com.example.dishdash.db.CheckCallBack;
 import com.example.dishdash.favourite.view.FavView;
 import com.example.dishdash.model.FoodRepository;
 import com.example.dishdash.model.response.Food;
@@ -38,6 +39,11 @@ _repo.getStoredFood();
     @Override
     public void updateFoodPlanbyId(String mealId, boolean isFav) {
         _repo.updateFoodPlanbyId(mealId, isFav);
+    }
+
+    @Override
+    public void checkIfMealExistsOnDate(FoodPlan foodPlan , CheckCallBack checkCallBack) {
+        _repo.checkIfMealExistsOnDate2(foodPlan,checkCallBack);
     }
 
     @Override

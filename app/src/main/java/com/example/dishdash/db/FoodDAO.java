@@ -52,5 +52,6 @@ public interface FoodDAO {
     @Query("DELETE FROM food_plan WHERE date = :date")
     void deleteFoodPlanByDate(String date);
 
-
+    @Query("SELECT EXISTS(SELECT 1 FROM food_plan WHERE mealId = :mealId AND date = :date)")
+    boolean isMealExistsOnDate(String mealId, String date);
 }

@@ -23,6 +23,16 @@ public class FoodPlan implements Serializable {
     private String mealId;
 
 
+    private boolean isExist;
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean exist) {
+        isExist = exist;
+    }
+
     public int getId() {
         return id;
     }
@@ -236,6 +246,7 @@ public class FoodPlan implements Serializable {
         this.dateModified = dateModified;
         this.isFav = isFav;
         this.date = date;
+        this.isExist=false;
     }
 
     public String getIngredient11() {

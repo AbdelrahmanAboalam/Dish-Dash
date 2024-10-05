@@ -1,7 +1,10 @@
 package com.example.dishdash.model;
 
+import android.widget.Toast;
+
 import androidx.lifecycle.LiveData;
 
+import com.example.dishdash.db.CheckCallBack;
 import com.example.dishdash.db.FoodLoaclDataBase;
 import com.example.dishdash.db.FoodLocalDataSourceImp;
 import com.example.dishdash.model.response.Category;
@@ -128,6 +131,11 @@ public class FoodRepositoryImpl implements FoodRepository{
     @Override
     public void updateFoodPlanbyId(String mealId, boolean isFav) {
         localDataSource.updateFoodPlanbyId(mealId,isFav);
+    }
+
+    @Override
+    public void checkIfMealExistsOnDate2(FoodPlan foodPlan, CheckCallBack checkCallBack) {
+        localDataSource.checkIfMealExistsOnDate(foodPlan,checkCallBack);
     }
 
 }

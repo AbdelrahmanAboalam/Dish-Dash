@@ -49,18 +49,23 @@ public class CalenderFragment extends DialogFragment {
         datePicker.setMinDate(calendar.getTimeInMillis());
 
         // Handle button click to select date
-        btnSelectDate.setOnClickListener(v -> {
-            int day = datePicker.getDayOfMonth();
-            int month = datePicker.getMonth() + 1;
-            int year = datePicker.getYear();
+        btnSelectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            String selectedDate = day + "/" + month + "/" + year;
 
-            // Call the listener to notify the parent fragment
-            if (listener != null) {
-                listener.onDateSelected(selectedDate);
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth() + 1;
+                int year = datePicker.getYear();
+
+                String selectedDate = day + "/" + month + "/" + year;
+
+                // Call the listener to notify the parent fragment
+                if (listener != null) {
+                    listener.onDateSelected(selectedDate);
+                }
+                dialog.dismiss();
             }
-            dialog.dismiss();
         });
 
         return dialog;
