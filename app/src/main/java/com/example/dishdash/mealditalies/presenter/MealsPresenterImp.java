@@ -36,6 +36,11 @@ _repo.getStoredFood();
     }
 
     @Override
+    public void updateFoodPlanbyId(String mealId, boolean isFav) {
+        _repo.updateFoodPlanbyId(mealId, isFav);
+    }
+
+    @Override
     public void onSuccessResult(List<Food> food) {
         for ( Food foods : food){
             _repo.checkFoodExists(foods);

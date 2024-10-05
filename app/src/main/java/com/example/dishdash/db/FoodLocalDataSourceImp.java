@@ -43,7 +43,10 @@ public class FoodLocalDataSourceImp implements FoodLoaclDataBase{
     public void insertFood(Food food) {
         new Thread(new Runnable() {
             @Override
-            public void run() { foodDAO.insertProduct(food); }
+            public void run() {
+                food.setFav(true);
+                foodDAO.insertProduct(food);
+            }
         }).start();
 
     }
@@ -52,7 +55,10 @@ public class FoodLocalDataSourceImp implements FoodLoaclDataBase{
     public void removeFood(Food food) {
         new Thread(new Runnable() {
             @Override
-            public void run() { foodDAO.deleteProduct(food); }
+            public void run() {
+                food.setFav(false);
+                foodDAO.deleteProduct(food);
+            }
         }).start();
     }
 
@@ -63,6 +69,26 @@ public class FoodLocalDataSourceImp implements FoodLoaclDataBase{
             public void run() { food.setFav(foodDAO.isProductExists(food.getMealId())); }
         }).start();
 
+    }
+
+    @Override
+    public void updateFoodbyId(String mealId, boolean isFav) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                foodDAO.updateFoodbyId(mealId, isFav);
+            }
+        }).start();
+    }
+
+    @Override
+    public void updateFoodPlanbyId(String mealId, boolean isFav) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                foodDAO.updateFoodPlanbyId(mealId, isFav);
+            }
+        }).start();
     }
 
     @Override

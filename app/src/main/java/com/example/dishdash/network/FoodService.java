@@ -3,6 +3,7 @@ package com.example.dishdash.network;
 import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.Ingred;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -32,4 +33,7 @@ public interface FoodService {
 
     @GET("list.php?a=list")
     Call<ListResponse<Country>> getCountries();
+
+    @GET("list.php?i=list")
+    Call<ListResponse<Ingred>> getIngredients();
 }

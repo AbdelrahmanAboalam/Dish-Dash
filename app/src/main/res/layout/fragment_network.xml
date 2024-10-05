@@ -1,35 +1,58 @@
-<!-- fragment_no_connection.xml -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    tools:context=".homepage.view.HomePageActivity">
 
-    <!-- Message for no connection -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No Internet Connection"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="20dp" />
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="236dp"
+        android:layout_height="335dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="88dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.361"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/wifi" />
 
-    <!-- Retry Icon Button -->
     <ImageButton
         android:id="@+id/btnRetry"
         android:layout_width="46dp"
         android:layout_height="34dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="Retry"
-        android:src="@drawable/retry" />
+        android:src="@drawable/retry"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-    <!-- Navigate to Favorites Button -->
-    <Button
+    <ImageButton
         android:id="@+id/btnGoToFavorites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to Favorites"
-        android:layout_marginTop="20dp" />
-</LinearLayout>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="68dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="Fav"
+        android:scaleType="fitCenter"
+        android:src="@drawable/folderheart"
+        app:layout_constraintEnd_toStartOf="@+id/btnRetry"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <ImageButton
+        android:id="@+id/btnGoToPlan"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="28dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="Planned"
+        android:scaleType="fitCenter"
+        android:src="@drawable/calendarcheck"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+</androidx.constraintlayout.widget.ConstraintLayout>

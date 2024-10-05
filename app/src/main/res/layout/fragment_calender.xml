@@ -7,19 +7,21 @@
 
     <DatePicker
         android:id="@+id/datePicker2"
-        android:layout_width="331dp"
-        android:layout_height="404dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="351dp"
+        android:layout_height="298dp"
         android:background="#C2D1C5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.475"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recPlaned"
-        android:layout_width="405dp"
-        android:layout_height="296dp"
+        android:layout_width="351dp"
+        android:layout_height="319dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datePicker2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

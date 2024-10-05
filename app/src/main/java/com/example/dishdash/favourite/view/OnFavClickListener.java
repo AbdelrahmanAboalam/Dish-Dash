@@ -6,4 +6,5 @@ public interface OnFavClickListener {
 
     void onLayoutClick(Food food);
     void onRemoveFromFavClick(Food food);
+    void updateFoodPlanbyId(String mealId, boolean isFav);
 }

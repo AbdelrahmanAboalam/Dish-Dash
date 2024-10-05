@@ -28,4 +28,9 @@ public class FavouritePresenterImp implements FavouritePresenter{
         _repo.deleteFood(food);
 
     }
+
+    @Override
+    public void updateFoodPlanbyId(String mealId, boolean isFav) {
+        _repo.updateFoodPlanbyId(mealId, isFav);
+    }
 }

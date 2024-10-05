@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.Ingred;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -132,6 +133,24 @@ public class FoodRempteDataSourceImpl implements FoodRemoteDataSource {
             @Override
             public void onFailure(Call<ListResponse<Food>> call, Throwable throwable) {
                 networkCallBack.onFailureResult(throwable.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallIngredients(NetworkCallback<Ingred> networkCallBack) {
+        foodService.getIngredients().enqueue(new Callback<ListResponse<Ingred>>() {
+
+            @Override
+            public void onResponse(Call<ListResponse<Ingred>> call, Response<ListResponse<Ingred>> response) {
+                if (response.isSuccessful()&&response.body()!=null){
+                    networkCallBack.onSuccessResult(response.body().allFood);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListResponse<Ingred>> call, Throwable throwable) {
+                networkCallBack.onFailureResult((throwable.getMessage()));
             }
         });
     }

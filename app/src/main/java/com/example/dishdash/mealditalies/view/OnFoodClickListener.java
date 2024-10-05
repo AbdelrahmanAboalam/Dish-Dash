@@ -7,6 +7,8 @@ public interface OnFoodClickListener {
     void onAddToFavClick(Food food);
     void onRemoveFavClick(Food food);
     void onCheckClick(Food food);
+    void updateFoodPlanbyId(String mealId, boolean isFav);
 
+    void  onDateSelected(String date);
 
 }

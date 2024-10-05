@@ -72,7 +72,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
     @Override
     public CountriesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
-        View v = inflater.inflate(R.layout.countries, recyclerView, false);
+        View v = inflater.inflate(R.layout.circle, recyclerView, false);
         CountriesAdapter.ViewHolder vh = new CountriesAdapter.ViewHolder(v);
         Log.i(TAG, "===== onCreateViewHolder =====");
         return vh;

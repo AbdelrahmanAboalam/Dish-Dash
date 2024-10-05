@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +17,18 @@ import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.example.dishdash.NetworkFragment;
 import com.example.dishdash.R;
 import com.example.dishdash.db.FoodLocalDataSourceImp;
 import com.example.dishdash.favourite.presenter.FavouritePresenterImp;
 import com.example.dishdash.favourite.view.FavFoodAdapter;
+import com.example.dishdash.homepage.view.HomeFragment;
 import com.example.dishdash.mealditalies.view.MealFragment;
 import com.example.dishdash.model.FoodRepositoryImpl;
 import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.Ingred;
 import com.example.dishdash.network.FoodRempteDataSourceImpl;
 import com.example.dishdash.searchfragment.presenter.SearchPresenter;
 import com.example.dishdash.searchfragment.presenter.SearchPresenterImpl;
@@ -40,6 +45,10 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
     private RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
 
+    List<Category> meal;
+    List<Ingred> ingred;
+    List<Country> country;
+
     TextView title;
     int tap=0;
     @Override
@@ -48,13 +57,24 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
 
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+//        view.setFocusableInTouchMode(true);
+//        view.requestFocus();
+//
+//        view.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+//                    navigateToHome();
+//                    return true; // Event handled
+//                }
+//                return false; // Let the event bubble up
+//            }
+//        });
         title=getActivity().findViewById(R.id.fragment_title);
         title.setText("Search Page");
 
@@ -88,6 +108,7 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
                             searchPresenter.getCategory();
                         break;
                     case 3: searchView.setQueryHint("Please Enter Ingretient name");
+                            searchPresenter.getIngredients();
                         break;
                 }
             }
@@ -128,13 +149,29 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
                         searchPresenter.getFoodName(searchView.getQuery().toString());
                         break;
                     case 1:
-                        searchPresenter.getFoodByCountry(searchView.getQuery().toString());
+                        if(s==null){
+                            searchPresenter.getCountries();
+                        }
+                        else {
+                            searchPresenter.filterCountries(searchView.getQuery().toString(), country);
+                        }
                         break;
                     case 2:
-                        searchPresenter.filterCategories(searchView.getQuery().toString());
+                        if(s==null){
+                            searchPresenter.getCategory();
+                        }
+                        else {
+                            searchPresenter.filterCategories(searchView.getQuery().toString(),meal);
+                        }
                         break;
                     case 3:
-                        searchPresenter.getFoodByIngredient(searchView.getQuery().toString());
+                        if(s==null){
+                            searchPresenter.getIngredients();
+                        }
+                        else {
+                            searchPresenter.filterIngredients(searchView.getQuery().toString(),ingred);
+                        }
+
                         break;
                 }
 
@@ -161,6 +198,11 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
     }
 
     @Override
+    public void onIngredientClick(String id) {
+        searchPresenter.getFoodByIngredient(id);
+    }
+
+    @Override
     public void showData(List<Food> food) {
         if(serAdapter.byId){
             MealFragment mealFragment=MealFragment.getInstance(food.get(0));
@@ -178,36 +220,59 @@ public class SearchFragment extends Fragment implements SerView,OnSearchClickLis
 
     @Override
     public void showErrMsg(String error) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(error).setTitle("An Error Occurred");
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new NetworkFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void showIngredientsData(List<Ingred> meals) {
+        ingred=meals;
+        serAdapter.setList4(meals);
+        serAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showCountryData(List<Country> meals) {
+        country=meals;
         serAdapter.setList3(meals);
         serAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showCategoryData(List<Category> meals) {
+        meal=meals;
         serAdapter.setList2(meals);
         serAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showCategoryErrMsg(String error) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage(error).setTitle("An Error Occurred");
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new NetworkFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void updateCountryList(List<Country> filteredCountries) {
+        serAdapter.setList3(filteredCountries);
+        serAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void updateCategoryList(List<Category> filteredCategories) {
-        serAdapter.updateCategories(filteredCategories);
+        serAdapter.setList2(filteredCategories);
         serAdapter.notifyDataSetChanged();
 
     }
+
+    @Override
+    public void updateIngredientList(List<Ingred> filteredCategories) {
+        serAdapter.setList4(filteredCategories);
+        serAdapter.notifyDataSetChanged();
+    }
+
+
 }

@@ -58,7 +58,7 @@ OnClickListener listener;
     @Override
     public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
-        View v = inflater.inflate(R.layout.test2, recyclerView, false);
+        View v = inflater.inflate(R.layout.circle, recyclerView, false);
         CategoryAdapter.ViewHolder vh = new CategoryAdapter.ViewHolder(v);
         Log.i(TAG, "===== onCreateViewHolder =====");
         return vh;
@@ -71,12 +71,22 @@ OnClickListener listener;
             txtCategories.setText(categoryList.get(position).getStrCategory()+" Meals");
         }
         Glide.with(context).load(categoryList.get(position).getStrCategoryThumb())
-                .apply(new RequestOptions().override(200,200)
+                .apply(new RequestOptions().circleCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.img);
         holder.txtView.setText(categoryList.get(position).getStrCategory());
         holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onCategoryClick(categoryList.get(position).getStrCategory());
+                    txtCategories.setText(categoryList.get(position).getStrCategory()+" Meals");
+
+                }
+            }
+        });
+        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (listener != null) {

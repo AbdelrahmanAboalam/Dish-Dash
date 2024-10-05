@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,7 +49,7 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.ViewHo
     @Override
     public CalenderAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup recyclerView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recyclerView.getContext());
-        View v = inflater.inflate(R.layout.test3, recyclerView, false);
+        View v = inflater.inflate(R.layout.calendercard, recyclerView, false);
         CalenderAdapter.ViewHolder vh = new CalenderAdapter.ViewHolder(v);
         Log.i(TAG, "===== ViewHolder Created ====");
         return vh;
@@ -58,8 +59,15 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.ViewHo
     public void onBindViewHolder(@NonNull CalenderAdapter.ViewHolder holder, int position) {
         FoodPlan food =values.get(position);
 
+        if(food.isFav())
+        {
+            holder.btnAddToFav.setImageResource(R.drawable.heart_filled);
+        }
+        else {
+            holder.btnAddToFav.setImageResource(R.drawable.heart_outline);
+        }
         Glide.with(context).load(food.getMealThumbnail())
-                .apply(new RequestOptions().override(200, 200)
+                .apply(new RequestOptions().circleCrop()
                         .placeholder(R.drawable.ic_launcher_foreground)
                         .error(R.drawable.ic_launcher_foreground))
                 .into(holder.imageView);
@@ -67,23 +75,32 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.ViewHo
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Food food1 = Converter.convertToFoodClass(food);
-                MealFragment mealFragment=MealFragment.getInstance(food1);
-
-                ((HomePageActivity) context).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container,mealFragment)
-                        .addToBackStack(null).commit();
+                listener.onLayoutClick(food);
             }
             });
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Food food1 = Converter.convertToFoodClass(food);
-                MealFragment mealFragment=MealFragment.getInstance(food1);
-
-                ((HomePageActivity) context).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container,mealFragment)
-                        .addToBackStack(null).commit();
+                listener.onLayoutClick(food);
+            }
+        });
+        holder.btnRemoveFromPlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onRemovFromPlanClick(food);
+            }
+        });
+        holder.btnAddToFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(food.isFav()){
+                    listener.onRemoveFromFavClick(food);
+                    holder.btnAddToFav.setImageResource(R.drawable.heart_outline);
+                }
+                else {
+                    listener.onAddToFavClick(food);
+                    holder.btnAddToFav.setImageResource(R.drawable.heart_filled);
+                }
             }
         });
 
@@ -99,15 +116,17 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.ViewHo
 
         private ImageView imageView;
         private TextView txtTitle;
-        private Button btnRemoveFromFav;
+        private ImageButton btnRemoveFromPlan,btnAddToFav;
         private View layout;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             layout=itemView;
             txtTitle=itemView.findViewById(R.id.textView);
             imageView=itemView.findViewById(R.id.imgbtn);
-//            btnRemoveFromFav=itemView.findViewById(R.id.remove_fav_button);
+             btnRemoveFromPlan=itemView.findViewById(R.id.remove_plan_button);
+             btnAddToFav=itemView.findViewById(R.id.btnFav);
         }
     }
 }

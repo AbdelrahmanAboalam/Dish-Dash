@@ -234,7 +234,7 @@ public class FoodPlan implements Serializable {
         this.imageSource = imageSource;
         this.creativeCommonsConfirmed = creativeCommonsConfirmed;
         this.dateModified = dateModified;
-        this.isFav = false;
+        this.isFav = isFav;
         this.date = date;
     }
 

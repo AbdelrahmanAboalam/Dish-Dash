@@ -24,6 +24,9 @@ public interface FoodDAO {
     @Delete
     void deleteProduct(Food food);
 
+    @Query("UPDATE food_table SET isFav = :isFav WHERE mealId = :mealId")
+    void updateFoodbyId(String mealId, boolean isFav);
+
     @Query("SELECT EXISTS(SELECT 1 FROM food_table WHERE mealId = :FoodId)")
     boolean isProductExists(String FoodId);
 ///////////////////////////////////////////////
@@ -33,6 +36,9 @@ public interface FoodDAO {
 
     @Query("SELECT * FROM food_plan WHERE date = :date")
     LiveData<List<FoodPlan>> getPlannedFood(String date);
+
+    @Query("UPDATE food_plan SET isFav = :isFav WHERE mealId = :mealId")
+    void updateFoodPlanbyId(String mealId, boolean isFav);
 
     @Query("SELECT * FROM food_plan WHERE date = :date")
     List<FoodPlan> getPlannedFoodList(String date);

@@ -7,5 +7,9 @@ public interface OnCalendarClickListener {
 
     void onLayoutClick(FoodPlan foodPlan);
 
+
+    void onAddToFavClick(FoodPlan foodPlan);
     void onRemoveFromFavClick(FoodPlan foodPlan);
+
+    void onRemovFromPlanClick(FoodPlan foodPlan);
 }

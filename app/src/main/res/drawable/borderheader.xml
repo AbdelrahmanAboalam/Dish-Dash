@@ -6,13 +6,18 @@
     <!-- Background color -->
     <solid android:color="#4CAF50" />
 
+    <!-- Black border -->
+    <stroke
+        android:width="2dp"
+    android:color="#000000" />
+
     <!-- Top corners carved (make them rounded to simulate carving) -->
     <corners android:topLeftRadius="40dp" android:topRightRadius="40dp" />
 
     <!-- You can add padding if needed -->
     <padding
         android:left="0dp"
-        android:top="00dp"
+        android:top="0dp"
         android:right="0dp"
         android:bottom="0dp" />
 </shape>

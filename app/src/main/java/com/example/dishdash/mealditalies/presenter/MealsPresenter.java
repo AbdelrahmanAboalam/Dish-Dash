@@ -9,4 +9,6 @@ public interface MealsPresenter {
     public void addToFav(Food food);
 
     public void addToPlan(FoodPlan foodPlan);
+
+    public void updateFoodPlanbyId(String mealId, boolean isFav);
 }

@@ -1,21 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".homepage.view.HomePageActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recFav"
-        android:layout_width="413dp"
-        android:layout_height="653dp"
+        android:layout_width="377dp"
+        android:layout_height="611dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="60dp"
-        android:visibility="visible"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:scrollbars="vertical"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/meal"/>
+        tools:listitem="@layout/meal" />
 </androidx.constraintlayout.widget.ConstraintLayout>

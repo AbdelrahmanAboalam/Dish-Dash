@@ -8,6 +8,7 @@ import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
 import com.example.dishdash.model.response.FoodPlan;
+import com.example.dishdash.model.response.Ingred;
 import com.example.dishdash.network.FoodRemoteDataSource;
 import com.example.dishdash.network.NetworkCallback;
 
@@ -64,6 +65,11 @@ public class FoodRepositoryImpl implements FoodRepository{
     }
 
     @Override
+    public void getIngredients(NetworkCallback<Ingred> callback) {
+        remoteSource.makeNetworkCallIngredients(callback);
+    }
+
+    @Override
     public void getCountries(NetworkCallback<Country> callback) {
         remoteSource.makeNetworkCallCountries(callback);
     }
@@ -95,6 +101,11 @@ public class FoodRepositoryImpl implements FoodRepository{
     }
 
     @Override
+    public void updateFoodbyId(String mealId, boolean isFav) {
+        localDataSource.updateFoodbyId(mealId,isFav);
+    }
+
+    @Override
     public LiveData<List<FoodPlan>> getPlannedFood(String date) {
         return localDataSource.getPlannedFood(date);
     }
@@ -114,5 +125,9 @@ public class FoodRepositoryImpl implements FoodRepository{
         localDataSource.updateFoodPlan(foodPlan);
     }
 
+    @Override
+    public void updateFoodPlanbyId(String mealId, boolean isFav) {
+        localDataSource.updateFoodPlanbyId(mealId,isFav);
+    }
 
 }

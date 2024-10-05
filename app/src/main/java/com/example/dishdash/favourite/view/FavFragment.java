@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +52,7 @@ public class FavFragment extends Fragment implements OnFavClickListener,FavView 
         View view = inflater.inflate(R.layout.fragment_fav, container, false);
 
         title=getActivity().findViewById(R.id.fragment_title);
-        title.setText("Favourite Page");
+        title.setText("Favourites");
 
         recyclerViewFav=view.findViewById(R.id.recFav);
         favouritePresenter =new FavouritePresenterImp( this, FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance(),
@@ -62,7 +63,7 @@ public class FavFragment extends Fragment implements OnFavClickListener,FavView 
         recyclerViewFav.setAdapter(favProductAdapter);
         layoutManager=new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerViewFav.setLayoutManager(layoutManager);
+        recyclerViewFav.setLayoutManager(new GridLayoutManager(getContext(),2));
 
         favFood.observe(getViewLifecycleOwner(), new Observer<List<Food>>() {
             @Override
@@ -99,12 +100,16 @@ public class FavFragment extends Fragment implements OnFavClickListener,FavView 
 
     @Override
     public void onLayoutClick(Food food) {
-        Toast.makeText(getContext(), food.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRemoveFromFavClick(Food food) {
         favouritePresenter.removeFromFav(food);
         favProductAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateFoodPlanbyId(String mealId, boolean isFav) {
+        favouritePresenter.updateFoodPlanbyId(mealId, isFav);
     }
 }

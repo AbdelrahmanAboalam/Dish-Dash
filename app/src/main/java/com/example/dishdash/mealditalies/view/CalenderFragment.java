@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 
 import com.example.dishdash.R;
 
@@ -21,15 +22,9 @@ import java.util.Calendar;
 
 
 public class CalenderFragment extends DialogFragment {
-    private OnDateSelectedListener listener;
+    private OnFoodClickListener listener;
 
-    // Interface for communicating with the parent fragment
-    public interface OnDateSelectedListener {
-        void onDateSelected(String date);
-    }
-
-    // This method allows the parent fragment to set the listener
-    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
+    public void setOnDateSelectedListener(OnFoodClickListener listener) {
         this.listener = listener;
     }
 
@@ -41,7 +36,7 @@ public class CalenderFragment extends DialogFragment {
 
         // Get references to the views
         DatePicker datePicker = view.findViewById(R.id.datePicker);
-        Button btnSelectDate = view.findViewById(R.id.btnSelectDate);
+        ImageButton btnSelectDate = view.findViewById(R.id.btnSelectDate);
 
         // Create dialog
         Dialog dialog = new Dialog(getActivity());
@@ -51,10 +46,12 @@ public class CalenderFragment extends DialogFragment {
         Calendar calendar = Calendar.getInstance();
         datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), null);
 
+        datePicker.setMinDate(calendar.getTimeInMillis());
+
         // Handle button click to select date
         btnSelectDate.setOnClickListener(v -> {
             int day = datePicker.getDayOfMonth();
-            int month = datePicker.getMonth() + 1; // Month is 0-indexed
+            int month = datePicker.getMonth() + 1;
             int year = datePicker.getYear();
 
             String selectedDate = day + "/" + month + "/" + year;
@@ -63,8 +60,6 @@ public class CalenderFragment extends DialogFragment {
             if (listener != null) {
                 listener.onDateSelected(selectedDate);
             }
-
-            // Dismiss dialog
             dialog.dismiss();
         });
 

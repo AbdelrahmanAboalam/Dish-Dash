@@ -20,15 +20,21 @@
             <!-- TextView for the first section title -->
 
             <!-- First RecyclerView for the top section -->
+
             <TextView
                 android:id="@+id/section1Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
+                android:fontFamily=""
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
                 android:text="Meal of the day"
                 android:textColor="#000"
-                android:textSize="18sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,6 +61,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Categories"
+                android:textStyle="bold"
                 android:textColor="#000"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +84,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Section 3"
+                android:text="Categories Meals"
+                android:textStyle="bold"
                 android:textColor="#000"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/section2Title"
@@ -88,6 +96,7 @@
                 android:id="@+id/recView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:background="#C2D1C5"
                 app:layout_constraintBottom_toTopOf="@id/txtCountry"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,6 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textStyle="bold"
                 android:text="Countries"
                 android:textColor="#000"
                 android:textSize="18sp"
@@ -120,7 +130,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Section 5"
+                android:textStyle="bold"
+                android:text="Countries Meal"
                 android:textColor="#000"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/txtCountry"
@@ -145,6 +156,46 @@
                 android:layout_marginTop="72dp"
                 app:layout_constraintStart_toStartOf="@+id/recView3"
                 app:layout_constraintTop_toTopOf="@+id/recView3" />
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="76dp"
+                android:layout_marginTop="92dp"
+                app:layout_constraintStart_toStartOf="@+id/recView"
+                app:layout_constraintTop_toTopOf="@+id/recView" />
+
+            <ProgressBar
+                android:id="@+id/progressBar3"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="180dp"
+                android:layout_marginTop="80dp"
+                app:layout_constraintStart_toStartOf="@+id/recView2"
+                app:layout_constraintTop_toTopOf="@+id/recView2" />
+
+            <ProgressBar
+                android:id="@+id/progressBar4"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="180dp"
+                android:layout_marginTop="92dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recView4" />
+
+            <ProgressBar
+                android:id="@+id/progressBar5"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="180dp"
+                android:layout_marginTop="76dp"
+                app:layout_constraintStart_toStartOf="@+id/recView5"
+                app:layout_constraintTop_toTopOf="@+id/recView5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

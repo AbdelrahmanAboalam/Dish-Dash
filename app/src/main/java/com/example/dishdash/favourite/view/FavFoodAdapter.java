@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,13 +76,32 @@ public class FavFoodAdapter extends RecyclerView.Adapter<FavFoodAdapter.ViewHold
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 listener.onLayoutClick(food);
             }
         });
         holder.btnRemoveFromFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onRemoveFromFavClick(food);
+                holder.btnRemoveFromFav.startAnimation(holder.animation);
+                holder.animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        listener.updateFoodPlanbyId(food.getMealId(), false);
+                        listener.onRemoveFromFavClick(food);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+//                listener.onRemoveFromFavClick(food);
             }
         });
     }
@@ -93,8 +115,10 @@ public class FavFoodAdapter extends RecyclerView.Adapter<FavFoodAdapter.ViewHold
 
         private ImageView imageView;
         private TextView txtTitle;
-        private Button btnRemoveFromFav;
+        private ImageButton btnRemoveFromFav;
         private View layout;
+        Animation animation;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +126,7 @@ public class FavFoodAdapter extends RecyclerView.Adapter<FavFoodAdapter.ViewHold
             txtTitle=itemView.findViewById(R.id.textView5);
             imageView=itemView.findViewById(R.id.imageView2);
             btnRemoveFromFav=itemView.findViewById(R.id.remove_fav_button);
+            animation= AnimationUtils.loadAnimation(context, R.anim.button_click_animation);
         }
     }
 }

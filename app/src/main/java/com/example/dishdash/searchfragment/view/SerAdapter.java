@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.example.dishdash.R;
 import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.Ingred;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +38,7 @@ public class SerAdapter extends RecyclerView.Adapter<SerAdapter.ViewHolder> {
     public boolean byId=false;
     private int listType =0;
     private Map<String,String> country =new HashMap<>();
+    private List<Ingred> ingredients;
 
 
 
@@ -45,14 +48,11 @@ public class SerAdapter extends RecyclerView.Adapter<SerAdapter.ViewHolder> {
         this.values = values;
         this.values2=values2;
         this.categoryList = new ArrayList<>();
+        this.ingredients=new ArrayList<>();
         setMapp();
     }
 
-    public void updateCategories(List<Category> newCategories) {
-        categoryList.clear();  // Clear the old list
-        categoryList.addAll(newCategories);  // Add the new filtered list
-        notifyDataSetChanged();  // Notify the adapter to refresh the view
-    }
+
 
     public void setList(List<Food> updatedProducts) {
         listType=0;
@@ -65,6 +65,10 @@ public class SerAdapter extends RecyclerView.Adapter<SerAdapter.ViewHolder> {
     public void setList3(List<Country>updatedProducts){
         listType=2;
         this.values3 = updatedProducts;
+    }
+    public void setList4(List<Ingred>updatedProducts){
+        listType=3;
+        this.ingredients = updatedProducts;
     }
 
 
@@ -153,30 +157,54 @@ public class SerAdapter extends RecyclerView.Adapter<SerAdapter.ViewHolder> {
                 }
             });
             }
+            else if(listType==3){
+                Ingred food = ingredients.get(position);
+                String URL = "https://www.themealdb.com/images/ingredients/" + food.getStrIngredient() + ".png";
+            Glide.with(context).load(URL)
+                    .apply(new RequestOptions().circleCrop()
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .error(R.drawable.ic_launcher_foreground))
+                    .into(holder.imageView);
+            holder.txtTitle.setText(food.getStrIngredient());
+            holder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onIngredientClick(food.getStrIngredient());
+                }
+            });
+            holder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onIngredientClick(food.getStrIngredient());
+                }
+            });
+        }
         }
 
 
 
     @Override
     public int getItemCount() {
-        if(listType==0){
-        if (values == null) {
-            return 0;
-        }
-        return values.size();
-        }
-        else if (listType==1){
+        if (listType == 0) {
+            if (values == null) {
+                return 0;
+            }
+            return values.size();
+        } else if (listType == 1) {
             if (values2 == null) {
                 return 0;
             }
             return values2.size();
-        }
-        else if(listType==2)
-        {
+        } else if (listType == 2) {
             if (values3 == null) {
                 return 0;
             }
             return values3.size();
+        } else if (listType == 3) {
+            if (ingredients == null) {
+                return 0;
+            }
+            return ingredients.size();
         }
         return 0;
     }

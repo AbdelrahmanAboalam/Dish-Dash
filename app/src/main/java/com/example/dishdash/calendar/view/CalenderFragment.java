@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +24,10 @@ import com.example.dishdash.db.FoodLocalDataSourceImp;
 import com.example.dishdash.favourite.presenter.FavouritePresenter;
 import com.example.dishdash.favourite.presenter.FavouritePresenterImp;
 import com.example.dishdash.favourite.view.FavFoodAdapter;
+import com.example.dishdash.homepage.view.HomePageActivity;
+import com.example.dishdash.mealditalies.view.MealFragment;
 import com.example.dishdash.model.FoodRepositoryImpl;
+import com.example.dishdash.model.response.Converter;
 import com.example.dishdash.model.response.Food;
 import com.example.dishdash.model.response.FoodPlan;
 import com.example.dishdash.network.FoodRempteDataSourceImpl;
@@ -52,7 +56,6 @@ public class CalenderFragment extends Fragment implements CalendarView,OnCalenda
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calender, container, false);
 
         title=getActivity().findViewById(R.id.fragment_title);
@@ -60,6 +63,9 @@ public class CalenderFragment extends Fragment implements CalendarView,OnCalenda
 
         DatePicker datePicker = view.findViewById(R.id.datePicker2);
         Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         recyclerViewFav=view.findViewById(R.id.recPlaned);
         calendarPresenter =new CalendarPresenterImpl( this, FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance(),
@@ -72,38 +78,34 @@ public class CalenderFragment extends Fragment implements CalendarView,OnCalenda
         recyclerViewFav.setLayoutManager(layoutManager);
 
 
+        try {
+            ViewGroup ll = (ViewGroup) ((ViewGroup) datePicker.getChildAt(0)).getChildAt(0);
+            if (ll != null) {
+                ll.getChildAt(0).setVisibility(View.GONE); // Hide the top part
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        DatePicker.OnDateChangedListener dateChangedListener = new DatePicker.OnDateChangedListener() {
 
-        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                new DatePicker.OnDateChangedListener() {
-                    @Override
+            @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // Format the selected date
-                        String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
 
-                        plannedFood=calendarPresenter.getPlanedFood(selectedDate);
-                        plannedFood.observe(getViewLifecycleOwner(), new Observer<List<FoodPlan>>() {
-                            @Override
-                            public void onChanged(List<FoodPlan> foodPlans) {
-                                // Update the adapter with new data
-                                adapter.setList(foodPlans);
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        // Send the selected date to another fragment or handle it
-                        Bundle result = new Bundle();
-                        result.putString("selectedDate", selectedDate);
-                        getParentFragmentManager().setFragmentResult("requestKey", result);
-
-                        // Show selected date in a Toast (for testing purposes)
-                        Toast.makeText(getContext(), "Selected Date: " + selectedDate, Toast.LENGTH_SHORT).show();
+                plannedFood = calendarPresenter.getPlanedFood(selectedDate);
+                plannedFood.observe(getViewLifecycleOwner(), new Observer<List<FoodPlan>>() {
+                    @Override
+                    public void onChanged(List<FoodPlan> foodPlans) {
+                        adapter.setList(foodPlans);
+                        adapter.notifyDataSetChanged();
                     }
                 });
+            }
+        };
+        datePicker.init(year, month, day, dateChangedListener);
 
-
-
-
+        dateChangedListener.onDateChanged(datePicker, year, month, day);
         return view;
     }
 
@@ -123,12 +125,37 @@ public class CalenderFragment extends Fragment implements CalendarView,OnCalenda
 
     @Override
     public void onLayoutClick(FoodPlan foodPlan) {
-        Toast.makeText(getContext(), foodPlan.toString(), Toast.LENGTH_SHORT).show();
+        Food food = Converter.convertToFoodClass(foodPlan);
+        MealFragment mealFragment=MealFragment.getInstance(food);
+        FragmentTransaction transaction=getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container,mealFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void onAddToFavClick(FoodPlan foodPlan) {
+        Food food = Converter.convertToFoodClass(foodPlan);
+        calendarPresenter.updateFoodPlanById(foodPlan.getMealId(),true);
+        calendarPresenter.updateFoodById(foodPlan.getMealId(),true);
+        calendarPresenter.addtoFav(food);
+        Toast.makeText(getContext(), foodPlan.getMealName()+ " Added to Favourites", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRemoveFromFavClick(FoodPlan foodPlan) {
-            calendarPresenter.removeFromFav(foodPlan);
-            adapter.notifyDataSetChanged();
+        Food food = Converter.convertToFoodClass(foodPlan);
+        calendarPresenter.updateFoodPlanById(foodPlan.getMealId(),false);
+        calendarPresenter.updateFoodById(foodPlan.getMealId(),false);
+        calendarPresenter.removeFromFav(food);
+        Toast.makeText(getContext(), foodPlan.getMealName()+ " Removed from Favourites", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onRemovFromPlanClick(FoodPlan foodPlan) {
+        calendarPresenter.removeFromPlan(foodPlan);
+        adapter.notifyDataSetChanged();
+        Toast.makeText(getContext(), foodPlan.getMealName()+ " Removed from Plan", Toast.LENGTH_SHORT).show();
     }
 }

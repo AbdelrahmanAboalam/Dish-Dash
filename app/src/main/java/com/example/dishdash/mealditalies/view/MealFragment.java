@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,163 +32,146 @@ import com.example.dishdash.model.response.Food;
 import com.example.dishdash.model.response.FoodPlan;
 import com.example.dishdash.model.response.Ingredient;
 import com.example.dishdash.network.FoodRempteDataSourceImpl;
-import com.example.dishdash.searchfragment.presenter.SearchPresenter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class MealFragment extends Fragment implements OnFoodClickListener ,MealView{
+public class MealFragment extends Fragment implements OnFoodClickListener, MealView {
+    // Constants
     private static final String ARG_FOOD_NAME = "food_name";
+    private static final String TAG = "track l moseba";
+
+    // References
     private Food food;
     private FoodPlan foodPlan;
+    private FoodRepositoryImpl favPresenter;
 
-    TextView title;
-private static final String TAG = "track l moseba";
-    FoodRepositoryImpl favpresnter;
-
-    ImageView mealImage;
-    TextView mealName;
-    TextView instruction;
-    WebView webView;
-    ImageButton btnFav;
-    ImageButton imgbtn;
-    private String selectedDate;
-
-
+    // UI
+    private TextView title;
+    private ImageView mealImage;
+    private TextView mealName;
+    private TextView instruction;
+    private WebView webView;
+    private ImageButton btnFav;
+    private ImageButton imgbtn;
     private RecyclerView recyclerView;
     private IngredientsAdapter ingredientsAdapter;
-    LinearLayoutManager linearLayout;
+    private LinearLayoutManager linearLayout;
 
-
-    public static MealFragment getInstance(Food food){
-        MealFragment fragment =new MealFragment();
+    // Method to receive meal
+    public static MealFragment getInstance(Food food) {
+        MealFragment fragment = new MealFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_FOOD_NAME, food);
         fragment.setArguments(args);
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            food = (Food)getArguments().getSerializable(ARG_FOOD_NAME);
-
-            favpresnter=FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance(), FoodLocalDataSourceImp.getInstance(getContext()));
+            food = (Food) getArguments().getSerializable(ARG_FOOD_NAME);
+            favPresenter = FoodRepositoryImpl.getInstance(FoodRempteDataSourceImpl.getInstance(), FoodLocalDataSourceImp.getInstance(getContext()));
             onCheckClick(food);
         }
     }
 
     @SuppressLint("MissingInflatedId")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meal, container, false);
+        // Initialize UI
         initUI(view);
 
-        title=getActivity().findViewById(R.id.fragment_title);
-        title.setText("Meal Ditalies");
+        // Set the title of the fragment
+        title = getActivity().findViewById(R.id.fragment_title);
+        title.setText("Meal Details");
 
+        // Set up the calendar dialog for selecting a date
         imgbtn = view.findViewById(R.id.imgbtn);
         imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CalenderFragment dialogFragment = new CalenderFragment();
-                dialogFragment.setOnDateSelectedListener(selectedDate -> {
-                    Toast.makeText(getContext(), "Selected date: " + selectedDate, Toast.LENGTH_SHORT).show();
-                    foodPlan = Converter.convertToPlanClass(food, selectedDate);
-                    favpresnter.insertFoodPlan(foodPlan);
-                });
-
+                dialogFragment.setOnDateSelectedListener(MealFragment.this); // Set this fragment as the listener
                 dialogFragment.show(getParentFragmentManager(), "calendarDialog");
             }
-        });
+            });
 
-        ingredientsAdapter = new IngredientsAdapter(getActivity(),new ArrayList<>(),this);
+
+        // Set up the RecyclerView for ingredients
+        ingredientsAdapter = new IngredientsAdapter(getActivity(), new ArrayList<>(), this);
         recyclerView.setHasFixedSize(true);
         linearLayout = new LinearLayoutManager(getActivity());
         linearLayout.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayout);
 
-
-        btnFav=view.findViewById(R.id.btnFav);
+        // Initialize other UI elements
+        btnFav = view.findViewById(R.id.btnFav);
         mealImage = view.findViewById(R.id.imageView);
         mealName = view.findViewById(R.id.textView2);
         instruction = view.findViewById(R.id.txtInstruction);
-        //For Web
+
+        // Set up WebView for YouTube video
         webView = view.findViewById(R.id.webView);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
+        // Get ingredients and update RecyclerView
         List<Ingredient> ingredientPojos = getIngList(food);
-
         ingredientsAdapter.setList2(ingredientPojos);
         recyclerView.setAdapter(ingredientsAdapter);
         ingredientsAdapter.notifyDataSetChanged();
 
-        Glide.with(this).load(food.getMealThumbnail()).apply(new RequestOptions().override(200,200)
-                .placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_foreground))
+        // Load meal image with Glide
+        Glide.with(this)
+                .load(food.getMealThumbnail())
+                .apply(new RequestOptions().override(200, 200)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_foreground))
                 .into(mealImage);
 
-        //For Parce response
-        String[] paragraphs = food.getInstructions().split("\\.");
-        StringBuilder formattedText = new StringBuilder();
-        for (int i = 0; i < paragraphs.length; i++) {
-            if (!paragraphs[i].trim().isEmpty()) {
-                // Add numbered bullet points
-                formattedText.append((i + 1) + "- " + paragraphs[i].trim() + "\n\n");
-            }
-        }
-
-
+        // Format and display instructions
+        String formattedInstructions = formatInstructions(food.getInstructions());
         mealName.setText(food.getMealName());
-        instruction.setText(formattedText.toString().trim());
+        instruction.setText(formattedInstructions);
 
+        // Load YouTube video
         String youtubeEmbedUrl = "https://www.youtube.com/embed/" + getYoutubeVideoId(food.getYoutubeUrl());
         webView.loadUrl(youtubeEmbedUrl);
 
-        if(food.isFav()){
-            btnFav.setImageResource(R.drawable.heart_filled);
-        }
-        else{
-            btnFav.setImageResource(R.drawable.heart_outline);
-        }
+        // Set favorite button state
+        btnFav.setImageResource(food.isFav() ? R.drawable.heart_filled : R.drawable.heart_outline);
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!food.isFav()) {
-                    Toast.makeText(getContext(), food.getMealName()+" Added To Favourite", Toast.LENGTH_SHORT).show();
-                    onAddToFavClick(food);
-                    btnFav.setImageResource(R.drawable.heart_filled);
-                }
-                else{
-                    Toast.makeText(getContext(), food.getMealName()+" Removed To Favourite", Toast.LENGTH_SHORT).show();
-                    onRemoveFavClick(food);
-                    btnFav.setImageResource(R.drawable.heart_outline);
-                }
+                toggleFavoriteStatus();
             }
         });
+
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "onViewCreated: "+food);
-//        Log.i(TAG, "onViewCreated: " +ingredientPojos );
-
+        Log.i(TAG, "onViewCreated: " + food);
     }
 
-
-
+    /****************************************************************************/
+    /************************** Initialize UI  **********************************/
+    /****************************************************************************/
     private void initUI(View view) {
         recyclerView = view.findViewById(R.id.rec2);
     }
+
+    /****************************************************************************/
+    /****************************** To make URL *********************************/
+    /****************************************************************************/
     private String getYoutubeVideoId(String url) {
         String videoId = "";
         if (url != null && url.contains("v=")) {
@@ -200,6 +181,37 @@ private static final String TAG = "track l moseba";
         return videoId;
     }
 
+    /****************************************************************************/
+    /***************************** Toggle Favorite ******************************/
+    /****************************************************************************/
+    private void toggleFavoriteStatus() {
+        if (!food.isFav()) {
+            Toast.makeText(getContext(), food.getMealName() + " Added To Favourite", Toast.LENGTH_SHORT).show();
+            updateFoodPlanbyId(food.getMealId(), true);
+            onAddToFavClick(food);
+            btnFav.setImageResource(R.drawable.heart_filled);
+        } else {
+            Toast.makeText(getContext(), food.getMealName() + " Removed From Favourite", Toast.LENGTH_SHORT).show();
+            updateFoodPlanbyId(food.getMealId(), false);
+            onRemoveFavClick(food);
+            btnFav.setImageResource(R.drawable.heart_outline);
+        }
+    }
+
+    // Format instructions with numbered bullet points
+    private String formatInstructions(String instructions) {
+        String[] paragraphs = instructions.split("\\.");
+        StringBuilder formattedText = new StringBuilder();
+        for (int i = 0; i < paragraphs.length; i++) {
+            if (!paragraphs[i].trim().isEmpty()) {
+                formattedText.append((i + 1) + "- " + paragraphs[i].trim() + "\n\n");
+            }
+        }
+        return formattedText.toString().trim();
+    }
+    /****************************************************************************/
+    /***************************** Click Listeners ******************************/
+    /****************************************************************************/
     @Override
     public void onLayoutClick(Food food) {
         Toast.makeText(getContext(), food.toString(), Toast.LENGTH_SHORT).show();
@@ -208,24 +220,35 @@ private static final String TAG = "track l moseba";
     @Override
     public void onAddToFavClick(Food food) {
         food.setFav(true);
-        favpresnter.insertFood(food);
+        favPresenter.insertFood(food);
     }
 
     @Override
     public void onRemoveFavClick(Food food) {
         food.setFav(false);
-        favpresnter.deleteFood(food);
+        favPresenter.deleteFood(food);
     }
 
     @Override
     public void onCheckClick(Food food) {
-        favpresnter.checkFoodExists(food);
+        favPresenter.checkFoodExists(food);
     }
 
+    @Override
+    public void updateFoodPlanbyId(String mealId, boolean isFav) {
+        favPresenter.updateFoodPlanbyId(mealId, isFav);
+    }
+
+    @Override
+    public void onDateSelected(String date) {
+        Toast.makeText(getContext(), "Selected date: " + date, Toast.LENGTH_SHORT).show();
+        foodPlan = Converter.convertToPlanClass(food, date);
+        favPresenter.insertFoodPlan(foodPlan);
+    }
 
     @Override
     public void showData(List<Food> food) {
-
+        // Method to show data if needed
     }
 
     @Override
@@ -236,28 +259,23 @@ private static final String TAG = "track l moseba";
         dialog.show();
     }
 
-
-
-
+    /****************************************************************************/
+    /***************************** Get Ingredients ******************************/
+    /****************************************************************************/
     private List<Ingredient> getIngList(Food food) {
-        List<Ingredient> ingList =  new ArrayList<>();
-        for (int i =1 ; i <= 20; i++) {
+        List<Ingredient> ingList = new ArrayList<>();
+        for (int i = 1; i <= 20; i++) {
             try {
                 String ingredient = (String) food.getClass().getMethod("getIngredient" + i).invoke(food);
                 String measure = (String) food.getClass().getMethod("getMeasure" + i).invoke(food);
                 if (ingredient != null && !ingredient.isEmpty() && measure != null && !measure.isEmpty()) {
                     String imageUrl = "https://www.themealdb.com/images/ingredients/" + ingredient + ".png";
                     ingList.add(new Ingredient(ingredient, measure, imageUrl));
-                    Log.i(TAG, "getIngList: " + ingList);
                 }
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e )
-            {
-                Log.i(TAG, "u in catch RUN ");
-                // Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
             }
-
         }
-
         return ingList;
     }
 }

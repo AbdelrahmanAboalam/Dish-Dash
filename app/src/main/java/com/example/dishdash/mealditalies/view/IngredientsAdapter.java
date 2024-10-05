@@ -77,7 +77,7 @@ public void setList2( List<Ingredient> food) {
 
 
             Glide.with(context).load(values.get(position).getIngredientThumb())
-                    .apply(new RequestOptions().override(200, 200)
+                    .apply(new RequestOptions().circleCrop()
                             .placeholder(R.drawable.ic_launcher_background)
                             .error(R.drawable.ic_launcher_foreground))
                     .into(holder.img);
@@ -90,6 +90,9 @@ public void setList2( List<Ingredient> food) {
 
     @Override
     public int getItemCount() {
+        if (values == null) {
+            return 0;
+        }
         return values.size();
     }
 }

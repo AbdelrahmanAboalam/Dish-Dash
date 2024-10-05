@@ -1,10 +1,13 @@
 package com.example.dishdash.searchfragment.presenter;
 
+import android.widget.Toast;
+
 import com.example.dishdash.model.FoodRepository;
 import com.example.dishdash.model.FoodRepositoryImpl;
 import com.example.dishdash.model.response.Category;
 import com.example.dishdash.model.response.Country;
 import com.example.dishdash.model.response.Food;
+import com.example.dishdash.model.response.Ingred;
 import com.example.dishdash.network.NetworkCallback;
 import com.example.dishdash.searchfragment.view.SerView;
 
@@ -16,6 +19,8 @@ public class SearchPresenterImpl implements SearchPresenter, NetworkCallback<Foo
     private FoodRepository _repo;
     private SerView _view;
     private List<Category> allCategories = new ArrayList<>();
+    private List<Ingred> allIngredients = new ArrayList<>();
+    private List<Country> allCountries = new ArrayList<>();
 
 
     private class CountryMealCallback implements NetworkCallback<Country> {
@@ -30,23 +35,72 @@ public class SearchPresenterImpl implements SearchPresenter, NetworkCallback<Foo
         }
     }
 
-    public void filterCategories(String query) {
-        List<Category> filteredCategories = new ArrayList<>();
-        for (Category category : allCategories) {
-            if (category.getStrCategory().toLowerCase().contains(query.toLowerCase())) {
-                filteredCategories.add(category);
-            }
+    private class IngredientMealCallback implements NetworkCallback<Ingred> {
+        @Override
+        public void onSuccessResult(List<Ingred> pojo) {
+            _view.showIngredientsData(pojo);
         }
 
-        // Send the filtered list to the fragment for updating the adapter
-        if (_view != null) {
-            _view.updateCategoryList(filteredCategories);
+        @Override
+        public void onFailureResult(String errorMsg) {
+            _view.showCategoryErrMsg(errorMsg);
         }
     }
+
+    public void filterCategories(String query,List<Category> filteredCategories) {
+        allCategories.clear();
+        if (query == null || query.trim().isEmpty()) {
+            allCategories.addAll(filteredCategories);
+        } else {
+            for (Category category : filteredCategories) {
+                if (category.getStrCategory().toLowerCase().contains(query.toLowerCase())) {
+                    allCategories.add(category);
+                }
+            }
+        }
+        _view.updateCategoryList(allCategories);
+    }
+
+    @Override
+    public void filterIngredients(String query, List<Ingred> filteredIngredients) {
+        allIngredients.clear();
+        if (query == null || query.trim().isEmpty()) {
+            allIngredients.addAll(filteredIngredients);
+        } else {
+            for (Ingred ingred : filteredIngredients) {
+                if (ingred.getStrIngredient().toLowerCase().contains(query.toLowerCase())) {
+                    allIngredients.add(ingred);
+                }
+            }
+        }
+        _view.updateIngredientList(allIngredients);
+    }
+
+    @Override
+    public void filterCountries(String query, List<Country> filteredCountries) {
+        allCountries.clear();
+        if (query == null || query.trim().isEmpty()) {
+            allCountries.addAll(filteredCountries);
+        }
+        else {
+            for (Country country : filteredCountries) {
+                if (country.getArea().toLowerCase().contains(query.toLowerCase())) {
+                    allCountries.add(country);
+                   }
+                }
+            }
+        _view.updateCountryList(allCountries);
+    }
+
 
     @Override
     public void getCountries() {
         _repo.getCountries(new CountryMealCallback());
+    }
+
+    @Override
+    public void getIngredients() {
+        _repo.getIngredients(new IngredientMealCallback());
     }
 
 

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/page_1"
         android:enabled="true"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:icon="@drawable/home"
         tools:ignore="MenuTitle" />
     <item
         android:id="@+id/page_2"
         android:enabled="true"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:icon="@drawable/search"
         tools:ignore="MenuTitle" />
 
@@ -16,6 +21,7 @@
         android:id="@+id/page_3"
         android:enabled="true"
         android:icon="@drawable/star"
+        app:showAsAction="collapseActionView"
         tools:ignore="MenuTitle" />
     <item
         android:id="@+id/page_4"
